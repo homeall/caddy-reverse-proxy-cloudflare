@@ -16,7 +16,6 @@ Note: you will need **the scoped API token** for this setup. Please analyze this
 
 [docker-compose.yml](https://docs.docker.com/compose/):
 
-*Note: Please choose the right $ARCH for caddy image.*
 
 ```
 version: "3.3"
@@ -25,7 +24,7 @@ services:
 
   caddy:
     container_name: caddy
-    image: homeall/caddy-reverse-proxy-cloudflare:amd64
+    image: homeall/caddy-reverse-proxy-cloudflare:latest
     restart: unless-stopped
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock" # needs socket to read events
