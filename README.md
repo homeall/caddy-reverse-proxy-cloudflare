@@ -30,19 +30,21 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This docker image is based on work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) which I included the [plugin Cloudflare](https://github.com/caddy-dns/cloudflare). 
+:white_check_mark: This docker image is based on work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) which I included the [plugin Cloudflare](https://github.com/caddy-dns/cloudflare). 
 
-This is only difference between this one and his image. 
+:o: This is only difference between this one and his image. 
 
-If you need more details about how to use this image I will adivce you to go on his GitHub and review the [documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
+:notebook_with_decorative_cover: If you need more details about how to use this image I will adivce you to go on his GitHub and review the [documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
 
-It is useful if you are planning to use the reverse proxy from [Caddy](https://caddyserver.com/) together with [Let's Encrypt](https://letsencrypt.org/) and [Cloudflare DNS](https://www.cloudflare.com/dns/) as a challenge. 
+:biohazard: It is useful if you are planning to use the reverse proxy from [Caddy](https://caddyserver.com/) together with [Let's Encrypt](https://letsencrypt.org/) and [Cloudflare DNS](https://www.cloudflare.com/dns/) as a challenge. 
 
-The main purpose of creating this image is to have DNS chalange for **wildcard domains**. 
+:star_of_david: The main purpose of creating this image is to have DNS chalange for **wildcard domains**. 
 
-I am using GitHub Actions where weekly it will update docker image and both plugins.
+:trident: I am using GitHub Actions where weekly it will update docker image and both plugins.
 
-Note: you will need **the scoped API token** for this setup. Please analyze this **[link](https://github.com/libdns/cloudflare#authenticating)**.
+:interrobang: Note: you will need **the scoped API token** for this setup. Please analyze this **[link](https://github.com/libdns/cloudflare#authenticating)**.
+
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -51,7 +53,7 @@ Note: you will need **the scoped API token** for this setup. Please analyze this
 
 ### Prerequisites
 
-You will need to have:
+:eight_spoked_asterisk: You will need to have:
 
 * :whale: [Docker](https://docs.docker.com/engine/install/)
 * :whale2: [docker-compose](https://docs.docker.com/compose/) 
@@ -65,11 +67,11 @@ You will need to have:
 
 ### Docker Compose
 
-You will have to use **labes** in docker-compose deployment. 
+:warning: You will have to use **labes** in docker-compose deployment. 
 
-You will tell :tm: [Caddy](https://caddyserver.com/) where it has to route traffic in docker network, as :tm: [Caddy](https://caddyserver.com/) is **ingress** on this case. 
+:radioactive: You will tell :tm: [Caddy](https://caddyserver.com/) where it has to route traffic in docker network, as :tm: [Caddy](https://caddyserver.com/) is **ingress** on this case. 
 
- A simple [docker-compose.yml](https://docs.docker.com/compose/):
+:arrow_down: A simple [docker-compose.yml](https://docs.docker.com/compose/):
 
 
 ```
