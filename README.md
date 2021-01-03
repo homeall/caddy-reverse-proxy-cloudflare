@@ -46,6 +46,27 @@ services:
       caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # Needed only for testing purpose. Remove this line after you finished your tests.
       caddy.tls.dns: "cloudflare $API-TOKEN"
 ```
-### Licence
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
 
-Distributed under the MIT license.
+<!-- LICENSE -->
+## License
+
+:newspaper_roll: Distributed under the MIT license. See [LICENSE](https://raw.githubusercontent.com/homeall/caddy-reverse-proxy-cloudflare/main/LICENSE) for more information.
+
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
+
+<!-- CONTACT -->
+## Contact
+
+:red_circle: Please free to open a ticket on Github.
+
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
+
+<!-- ACKNOWLEDGEMENTS -->
+## Acknowledgements
+
+ * :tada: [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) :trophy:
+ * :tada: :tm: [@caddy](https://github.com/caddyserver/caddy) :1st_place_medal: and its huge community :medal_military:
+ * :tada: [dns.providers.cloudflare](https://github.com/caddy-dns/cloudflare) :medal_sports:
+
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
