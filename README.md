@@ -36,7 +36,7 @@
 
 :notebook_with_decorative_cover: If you need more details about how to use this image I will adivce you to go on his GitHub and review the [documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
 
-:biohazard: It is useful if you are planning to use the reverse proxy from [Caddy](https://caddyserver.com/) together with [Let's Encrypt](https://letsencrypt.org/) and [Cloudflare DNS](https://www.cloudflare.com/dns/) as a challenge. 
+:biohazard: It is useful if you are planning to use the reverse proxy from :tm: [Caddy](https://caddyserver.com/) together with [Let's Encrypt](https://letsencrypt.org/) and [Cloudflare DNS](https://www.cloudflare.com/dns/) as a challenge. 
 
 :star_of_david: The main purpose of creating this image is to have DNS chalange for **wildcard domains**. 
 
