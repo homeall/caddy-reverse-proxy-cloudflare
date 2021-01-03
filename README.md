@@ -2,13 +2,19 @@
 
 # Caddy reverse proxy with cloudflare plugin
 
-This docker image is based on work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) which I included the [plugin Cloudflare](https://github.com/caddy-dns/cloudflare).
+## About This Project
 
-Please review the *links above* in order to use it. 
+This docker image is based on work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) which I included the [plugin Cloudflare](https://github.com/caddy-dns/cloudflare). 
+
+This is only difference between this one and his image. 
+
+If you need more details about how to use this image I will adivce you to go on his GitHub and review the [documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
 
 It is useful if you are planning to use the reverse proxy from [Caddy](https://caddyserver.com/) together with [Let's Encrypt](https://letsencrypt.org/) and [Cloudflare DNS](https://www.cloudflare.com/dns/) as a challenge. 
 
-Very great for *wildcard domains*. 
+The main purpose of creating this image is to have DNS chalange for **wildcard domains**. 
+
+I am using GitHub Actions where weekly it will update docker image and both plugins.
 
 Note: you will need **the scoped API token** for this setup. Please analyze this **[link](https://github.com/libdns/cloudflare#authenticating)**.
 
