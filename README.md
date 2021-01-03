@@ -66,7 +66,7 @@ services:
 ## Acknowledgements
 
  * :tada: [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) :trophy:
- * :tada: :tm: [@caddy](https://github.com/caddyserver/caddy) :1st_place_medal: and its huge community :medal_military:
+ * :tada: :tm: [@Caddy](https://github.com/caddyserver/caddy) :1st_place_medal: and its huge :medal_military: **community** :heavy_exclamation_mark:
  * :tada: [dns.providers.cloudflare](https://github.com/caddy-dns/cloudflare) :medal_sports:
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
