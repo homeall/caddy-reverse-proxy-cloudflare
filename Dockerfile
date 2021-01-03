@@ -30,6 +30,8 @@ COPY --from=gobuild /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY --from=gobuild /go/src/github.com/caddyserver/xcaddy/cmd/caddy /bin/
 
+HEALTHCHECK CMD wget -q --spider http://127.0.0.1:2019 || exit 1
+
 ENTRYPOINT ["/bin/caddy"]
 
 CMD ["docker-proxy"]
