@@ -26,7 +26,7 @@ ENV XDG_DATA_HOME /data
 
 COPY --from=gobuild /go/src/github.com/caddyserver/xcaddy/cmd/caddy /bin/
 
-HEALTHCHECK --interval=10s --timeout=5s --start-period=5s CMD curl -fs http://127.0.0.1:2019/config -o /dev/null  || exit 1
+HEALTHCHECK --interval=10s --timeout=5s --start-period=5s CMD curl -fs http://127.0.0.1:2019/config -o /dev/null || exit 1
 
 ENTRYPOINT ["/bin/caddy"]
 
