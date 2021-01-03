@@ -14,7 +14,7 @@ RUN  xcaddy build \
 
 FROM alpine:3.11 as alpine
 
-RUN apk add -U --no-cache ca-certificates
+RUN apk add -U --no-cache ca-certificates curl
 
 FROM scratch
 
@@ -30,7 +30,7 @@ COPY --from=gobuild /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY --from=gobuild /go/src/github.com/caddyserver/xcaddy/cmd/caddy /bin/
 
-HEALTHCHECK CMD wget -q --spider http://127.0.0.1:2019 || exit 1
+HEALTHCHECK CMD curl -fs http://127.0.0.1:2019/config -o /dev/null || exit 1
 
 ENTRYPOINT ["/bin/caddy"]
 
