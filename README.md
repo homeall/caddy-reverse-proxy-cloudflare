@@ -2,7 +2,33 @@
 
 # Caddy reverse proxy with cloudflare plugin
 
-## About This Project
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#docker-compose">Docker-compose</a></li>
+      </ul>
+    </li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgements">Acknowledgements</a></li>
+  </ol>
+</details>
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
 This docker image is based on work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) which I included the [plugin Cloudflare](https://github.com/caddy-dns/cloudflare). 
 
@@ -18,9 +44,32 @@ I am using GitHub Actions where weekly it will update docker image and both plug
 
 Note: you will need **the scoped API token** for this setup. Please analyze this **[link](https://github.com/libdns/cloudflare#authenticating)**.
 
-## Configuration
+<!-- GETTING STARTED -->
+## Getting Started
 
-[docker-compose.yml](https://docs.docker.com/compose/):
+:beginner: It will work on any Linux box amd64 or [Raspberry Pi](https://www.raspberrypi.org) with arm64 or arm32. 
+
+### Prerequisites
+
+You will need to have:
+
+* :whale: [Docker](https://docs.docker.com/engine/install/)
+* :whale2: [docker-compose](https://docs.docker.com/compose/) 
+
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
+
+<!-- USAGE -->
+## Usage
+
+:beginner: It will work on any Linux box amd64 or [Raspberry Pi](https://www.raspberrypi.org) with arm64 or arm32. 
+
+### Docker Compose
+
+You will have to use **labes** in docker-compose deployment. 
+
+You will tell :tm: [Caddy](https://caddyserver.com/) where it has to route traffic in docker network, as :tm: [Caddy](https://caddyserver.com/) is **ingress** on this case. 
+
+ A simple [docker-compose.yml](https://docs.docker.com/compose/):
 
 
 ```
