@@ -162,7 +162,7 @@ Content-Length: 0
 * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
 * Using Stream ID: 1 (easy handle 0x7fa754813e00)
 > GET / HTTP/2
-> Host: test.gonl.ink
+> Host: your.example.com
 > user-agent: curl/7.74.0
 > accept: */*
 >
