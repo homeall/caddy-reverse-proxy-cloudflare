@@ -14,23 +14,19 @@ RUN  xcaddy build \
 
 FROM alpine:3.11 as alpine
 
-RUN apk add -U --no-cache ca-certificates
-
-FROM scratch
+RUN apk add -U --no-cache ca-certificates curl
 
 LABEL maintainer "HomeAll"
 
 EXPOSE 80 443 2019
+
 ENV XDG_CONFIG_HOME /config
+
 ENV XDG_DATA_HOME /data
-
-WORKDIR /
-
-COPY --from=gobuild /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY --from=gobuild /go/src/github.com/caddyserver/xcaddy/cmd/caddy /bin/
 
-HEALTHCHECK CMD nc -zvw3 127.0.0.1 443 || exit 1
+HEALTHCHECK --interval=10s --timeout=5s --start-period=5s CMD curl -fs http://127.0.0.1:2019/config -o /dev/null  || exit 1
 
 ENTRYPOINT ["/bin/caddy"]
 
