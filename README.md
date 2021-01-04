@@ -153,7 +153,7 @@ Content-Length: 0
 * SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256
 * ALPN, server accepted to use h2
 * Server certificate:
-*  subject: CN=your.example.com ########################################### CA from Let's Enctrypt Stagging 
+*  subject: CN=your.example.com ########################################### CA from Let's Enctrypt Staging 
 *  start date: Jan  3 17:10:09 2021 GMT
 *  expire date: Apr  3 17:10:09 2021 GMT
 *  issuer: CN=Fake LE Intermediate X1. ####################################----> This is telling you that acme is working as expecting!
