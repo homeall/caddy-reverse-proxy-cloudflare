@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  caddy:
+    container_name: caddy
+    image: homeall/caddy-reverse-proxy-cloudflare:latest
+    restart: unless-stopped
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock" #### needs socket to read events
+      - "./caddy-data:/data" #### needs volume to back up certificates
+    ports:
+      - "80:80"
+      - "443:443"
+    labels: # Global options
+      caddy.email: email@example.com #### needs for acme CERT registration account
+
+  whoami0:
+    container_name: whoiam
+    image: jwilder/whoami:latest
+    hostname: YourBigBoss ############################----->>Expected result using curl
+    restart: unless-stopped
+    labels:
+      caddy: your.example.com #### needs for caddy to redirect traffic
+      caddy.reverse_proxy: "{{upstreams 8000}}" #### needs to tell caddy which port number should send traffic
+      caddy.tls.protocols: "tls1.3" #### This is optional. Default it is tls1.2
+      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # Needs only for testing purpose. Remove this line after you finished your tests.
+      caddy.tls.dns: "cloudflare $API-TOKEN" #### You will have to replace here $API-TOKEN with your real scoped API token from Cloudflare.
