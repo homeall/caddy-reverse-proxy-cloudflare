@@ -70,7 +70,7 @@
 
 ### Docker Compose
 
-:warning: You will have to use **labes** in docker-compose deployment. 
+:warning: You will have to use **labels** in docker-compose deployment. Please review below what it means each [label](https://caddyserver.com/docs/caddyfile/directives/tls). :arrow_down:
 
 :radioactive: You will tell :tm: [Caddy](https://caddyserver.com/) where it has to route traffic in docker network, as :tm: [Caddy](https://caddyserver.com/) is **ingress** on this case. 
 
@@ -87,29 +87,31 @@ services:
     image: homeall/caddy-reverse-proxy-cloudflare:latest
     restart: unless-stopped
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock" # needs socket to read events
-      - "./caddy-data:/data" # needs volume to back up certificates
+      - "/var/run/docker.sock:/var/run/docker.sock" #### needs socket to read events
+      - "./caddy-data:/data" #### needs volume to back up certificates
     ports:
       - "80:80"
       - "443:443"
     labels: # Global options
-      caddy.email: email@example.com
+      caddy.email: email@example.com #### needs for acme CERT registration account
 
   whoami0:
     container_name: whoiam
     image: jwilder/whoami:latest
-    hostname: YourBigBoss ##Expected result using curl
+    hostname: YourBigBoss ############################----->>Expected result using curl
     restart: unless-stopped
     labels:
-      caddy: your.example.com
-      caddy.reverse_proxy: "{{upstreams 8000}}"
-      caddy.tls.protocols: "tls1.3"
-      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # Needed only for testing purpose. Remove this line after you finished your tests.
-      caddy.tls.dns: "cloudflare $API-TOKEN"
+      caddy: your.example.com #### needs for caddy to redirect traffic
+      caddy.reverse_proxy: "{{upstreams 8000}}" #### needs to tell caddy which port number should send traffic
+      caddy.tls.protocols: "tls1.3" #### This is optional. Default it is tls1.2
+      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # Needs only for testing purpose. Remove this line after you finished your tests.
+      caddy.tls.dns: "cloudflare $API-TOKEN" #### You will have to replace here $API-TOKEN with your real scoped API token from Cloudflare.
 ```
 ### Testing
 
-:8ball: You can run command `curl -kivL -H 'Host: your.example.com' 'https://localhost'`
+:8ball: You can run command:
+ 
+`$ curl -kivL -H 'Host: your.example.com' 'https://localhost'`
 
 :arrow_down: Output results:
 
@@ -138,7 +140,7 @@ Content-Length: 0
 * Closing connection 0
 * Issue another request to this URL: 'https://your.example.com/'
 *   Trying 127.0.0.1:443...
-* Connected to test.gonl.ink (127.0.0.1) port 443 (#1)
+* Connected to your.example.com (127.0.0.1) port 443 (#1)
 * ALPN, offering h2
 * ALPN, offering http/1.1
 * TLSv1.3 (OUT), TLS handshake, Client hello (1):
@@ -152,10 +154,10 @@ Content-Length: 0
 * SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256
 * ALPN, server accepted to use h2
 * Server certificate:
-*  subject: CN=your.example.com ## CA from Let's Enctrypt Stagging 
+*  subject: CN=your.example.com ########################################### CA from Let's Enctrypt Stagging 
 *  start date: Jan  3 17:10:09 2021 GMT
 *  expire date: Apr  3 17:10:09 2021 GMT
-*  issuer: CN=Fake LE Intermediate X1. ##----> This is telling you that acme is working as expecting!
+*  issuer: CN=Fake LE Intermediate X1. ####################################----> This is telling you that acme is working as expecting!
 *  SSL certificate verify result: unable to get local issuer certificate (20), continuing anyway.
 * Using HTTP2, server supports multi-use
 * Connection state changed (HTTP/2 confirmed)
@@ -180,8 +182,27 @@ server: Caddy
 content-length: 17
 
 <
-I'm YourBigBoss. ##-> Reply from whoiam container.
+I'm YourBigBoss. ######################################################-------> Reply from whoiam container.
 * Connection #1 to host your.example.com left intact
+```
+:hearts: On the status column of the docker, you will notice the `healthy` word. This is telling you that docker is running [healtcheck](https://scoutapm.com/blog/how-to-use-docker-healthcheck) itself in order to make sure it is working properly. 
+
+:arrow_down: Please test yourself using the following command:
+
+```
+❯ docker inspect --format "{{json .State.Health }}" caddy | jq
+{
+  "Status": "healthy",
+  "FailingStreak": 0,
+  "Log": [
+    {
+      "Start": "2021-01-04T11:10:49.2975799Z",
+      "End": "2021-01-04T11:10:49.3836437Z",
+      "ExitCode": 0,
+      "Output": ""
+    }
+  ]
+}
 ```
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
