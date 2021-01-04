@@ -4,8 +4,8 @@ on:
   push:
     branches: [ master ]
   workflow_dispatch:
-    schedule:
-      - cron: "0 8 * * 1"
+  schedule:
+  - cron: "15 10 * * 1"
 
 jobs:
   buildx:
