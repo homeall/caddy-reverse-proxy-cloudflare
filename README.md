@@ -37,13 +37,13 @@
 
 :o: This is only difference between this one and his image. 
 
-:notebook_with_decorative_cover: If you need more details about how to use this image I will adivce you to go on his GitHub and review the [documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
+:notebook_with_decorative_cover: If you need more details about how to use this image I will advise you to go to his GitHub and review the [documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
 
 :biohazard: It is useful if you are planning to use the reverse proxy from :tm: [Caddy](https://caddyserver.com/) together with [Let's Encrypt](https://letsencrypt.org/) and [Cloudflare DNS](https://www.cloudflare.com/dns/) as a challenge. 
 
-:star_of_david: The main purpose of creating this image is to have DNS chalange for **wildcard domains**. 
+:star_of_david: The main purpose of creating this image is to have DNS challenge for **wildcard domains**. 
 
-:trident: I am using GitHub Actions where weekly it will update docker image and both plugins.
+:trident: I am using GitHub Actions where it will update weekly docker image and both plugins.
 
 :interrobang: Note: you will need **the scoped API token** for this setup. Please analyze this **[link](https://github.com/libdns/cloudflare#authenticating)**.
 
