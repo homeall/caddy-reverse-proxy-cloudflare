@@ -81,7 +81,6 @@
 version: "3.3"
 
 services:
-
   caddy:
     container_name: caddy
     image: homeall/caddy-reverse-proxy-cloudflare:latest
