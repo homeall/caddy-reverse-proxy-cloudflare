@@ -106,6 +106,8 @@ services:
       caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # Needs only for testing purpose. Remove this line after you finished your tests.
       caddy.tls.dns: "cloudflare $API-TOKEN" #### You will have to replace here $API-TOKEN with your real scoped API token from Cloudflare.
 ```
+> Please get your scoped API-Token from  **[here](https://github.com/libdns/cloudflare#authenticating)**.
+
 ### Testing
 
 :8ball: You can run command:
@@ -184,6 +186,7 @@ content-length: 17
 I'm YourBigBoss. ######################################################-------> Reply from whoiam container.
 * Connection #1 to host your.example.com left intact
 ```
+
 :hearts: On the status column of the docker, you will notice the `healthy` word. This is telling you that docker is running [healtcheck](https://scoutapm.com/blog/how-to-use-docker-healthcheck) itself in order to make sure it is working properly. 
 
 :arrow_down: Please test yourself using the following command:
