@@ -60,6 +60,8 @@
 
 * :whale: [Docker](https://docs.docker.com/engine/install/)
 * :whale2: [docker-compose](https://docs.docker.com/compose/) 
+* :globe_with_meridians: Domain name -> you can get from [Name Cheap](https://www.namecheap.com)
+* :classical_building: [Cloudflare DNS Zone](https://www.cloudflare.com/en-gb/learning/dns/glossary/dns-zone/)
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
