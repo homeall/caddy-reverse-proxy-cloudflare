@@ -108,11 +108,11 @@ services:
 ```
 > Please get your scoped API-Token from  **[here](https://github.com/libdns/cloudflare#authenticating)**.
 
-:arrow_down: Output results:
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 ### Testing
 
-:8ball: You can run command:
+:arrow_down: Your can run the following command to see that is working:
  
 `$ curl -kvL -H 'Host: your.example.com' 'https://localhost'`
 
@@ -129,7 +129,7 @@ services:
 *  subject: CN=test.ionut.vip ################################ CA from Let's Enctrypt Staging 
 *  start date: Jan  5 15:15:00 2021 GMT
 *  expire date: Apr  5 15:15:00 2021 GMT
-*  issuer: CN=Fake LE Intermediate X1######################### This is telling you that acme is working as expecting!  
+*  issuer: CN=Fake LE Intermediate X1 ######################## This is telling you that acme is working as expecting!  
 * Using HTTP2, server supports multi-use
 * Connection state changed (HTTP/2 confirmed)
 * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
