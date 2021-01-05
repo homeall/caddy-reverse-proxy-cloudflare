@@ -77,7 +77,6 @@ You will tell :tm: [Caddy](https://caddyserver.com/) where it has to route traff
 
 :arrow_down: A simple [docker-compose.yml](https://docs.docker.com/compose/):
 
-
 ```
 version: "3.3"
 
@@ -208,21 +207,15 @@ I'm YourBigBoss. ######################################################-------> 
 }
 ```
 
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
-
 <!-- LICENSE -->
 ## License
 
 :newspaper_roll: Distributed under the MIT license. See [LICENSE](https://raw.githubusercontent.com/homeall/caddy-reverse-proxy-cloudflare/main/LICENSE) for more information.
 
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
-
 <!-- CONTACT -->
 ## Contact
 
 :red_circle: Please free to open a ticket on Github.
-
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
