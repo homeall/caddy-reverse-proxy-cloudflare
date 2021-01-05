@@ -35,21 +35,20 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-:white_check_mark: This docker image is based on work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) which I included the [plugin Cloudflare](https://github.com/caddy-dns/cloudflare). 
+This docker image is based on work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) which I included the [plugin Cloudflare](https://github.com/caddy-dns/cloudflare). 
 
-:o: This is only difference between this one and his image. 
+This is only difference between this one and his image. 
 
 :notebook_with_decorative_cover: If you need more details about how to use this image I will advise you to go to his GitHub and review the [documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
 
-:biohazard: It is useful if you are planning to use the reverse proxy from :tm: [Caddy](https://caddyserver.com/) together with [Let's Encrypt](https://letsencrypt.org/) and [Cloudflare DNS](https://www.cloudflare.com/dns/) as a challenge. 
+It is useful if you are planning to use the reverse proxy from :tm: [Caddy](https://caddyserver.com/) together with [Let's Encrypt](https://letsencrypt.org/) and [Cloudflare DNS](https://www.cloudflare.com/dns/) as a challenge. 
 
-:star_of_david: The main purpose of creating this image is to have DNS challenge for **wildcard domains**. 
+The main purpose of creating this image is to have DNS challenge for **wildcard domains**. 
 
-:trident: I am using GitHub Actions where it will update weekly docker image and both plugins.
+I am using GitHub Actions where it will update weekly docker image and both plugins.
 
 :interrobang: Note: you will need **the scoped API token** for this setup. Please analyze this **[link](https://github.com/libdns/cloudflare#authenticating)**.
 
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -60,19 +59,15 @@
 
 [![Made with Docker !](https://img.shields.io/badge/Made%20with-Docker-blue)](https://github.com/homeall/caddy-reverse-proxy-cloudflare/blob/main/Dockerfile)
 
-:eight_spoked_asterisk: You will need to have:
+You will need to have:
 
 * :whale: [Docker](https://docs.docker.com/engine/install/)
 * :whale2: [docker-compose](https://docs.docker.com/compose/) 
-* :globe_with_meridians: Domain name -> you can get from [Name Cheap](https://www.namecheap.com)
-* :classical_building: [Cloudflare DNS Zone](https://www.cloudflare.com/en-gb/learning/dns/glossary/dns-zone/)
-
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
+* Domain name -> you can get from [Name Cheap](https://www.namecheap.com)
+* [Cloudflare DNS Zone](https://www.cloudflare.com/en-gb/learning/dns/glossary/dns-zone/)
 
 <!-- USAGE -->
 ## Usage
-
-:beginner: It will work on any Linux box amd64 or [Raspberry Pi](https://www.raspberrypi.org) with arm64 or arm32. 
 
 ### Docker Compose
 
