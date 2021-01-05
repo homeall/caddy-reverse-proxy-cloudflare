@@ -114,37 +114,21 @@ services:
 
 :arrow_down: Your can run the following command to see that is working:
  
-`$ curl -kvL -H 'Host: your.example.com' 'https://localhost'`
-
 ```
-* Issue another request to this URL: 'https://test.ionut.vip/'
-*   Trying 127.0.0.1:443...
-* Connected to test.ionut.vip (127.0.0.1) port 443 (#1)
-* ALPN, offering h2
-* ALPN, offering http/1.1
-* TLSv1.3 (OUT), TLS handshake, Finished (20):
-* SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256
-* ALPN, server accepted to use h2
+$  curl --insecure -vvI https://test.ionut.vip 2>&1 | awk 'BEGIN { cert=0 } /^\* Server certificate:/ { cert=1 } /^\*/ { if (cert) print }'
 * Server certificate:
 *  subject: CN=test.ionut.vip ################################ CA from Let's Enctrypt Staging 
 *  start date: Jan  5 15:15:00 2021 GMT
 *  expire date: Apr  5 15:15:00 2021 GMT
-*  issuer: CN=Fake LE Intermediate X1 ######################## This is telling you that acme is working as expecting!  
+*  issuer: CN=Fake LE Intermediate X1 ######################## This is telling you that acme is working as expecting!
+*  SSL certificate verify result: unable to get local issuer certificate (20), continuing anyway.
 * Using HTTP2, server supports multi-use
 * Connection state changed (HTTP/2 confirmed)
 * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
-* Using Stream ID: 1 (easy handle 0x7f917580fe00)
-> GET / HTTP/2
-> Host: test.ionut.vip
-> user-agent: curl/7.74.0
-> accept: */*
+* Using Stream ID: 1 (easy handle 0x7fc02180ec00)
 * TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
 * Connection state changed (MAX_CONCURRENT_STREAMS == 250)!
-< HTTP/2 200
-< content-type: text/plain; charset=utf-8
-< date: Tue, 05 Jan 2021 16:19:33 GMT
-< server: Caddy
-< content-length: 16
+$  curl -k https://test.ionut.vip
 I'm TheDocker################################### Expected result from hostname above
 ```
 
