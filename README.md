@@ -97,7 +97,7 @@ services:
   whoami0:
     container_name: whoiam
     image: jwilder/whoami:latest
-    hostname: YourBigBoss ############################----->>Expected result using curl
+    hostname: TheDocker ############################----->>Expected result using curl
     restart: unless-stopped
     labels:
       caddy: your.example.com #### needs for caddy to redirect traffic
@@ -108,83 +108,44 @@ services:
 ```
 > Please get your scoped API-Token from  **[here](https://github.com/libdns/cloudflare#authenticating)**.
 
+:arrow_down: Output results:
+
 ### Testing
 
 :8ball: You can run command:
  
-`$ curl -kivL -H 'Host: your.example.com' 'https://localhost'`
+`$ curl -kvL -H 'Host: your.example.com' 'https://localhost'`
 
-:arrow_down: Output results:
-
-```*   Trying ::1:80...
-* Connected to localhost (::1) port 80 (#0)
-> GET / HTTP/1.1
-> Host: your.example.com
-> User-Agent: curl/7.74.0
-> Accept: */*
->
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 308 Permanent Redirect
-HTTP/1.1 308 Permanent Redirect
-< Connection: close
-Connection: close
-< Location: https://your.example.com/
-Location: https://your.example.com/
-< Server: Caddy
-Server: Caddy
-< Date: Sun, 03 Jan 2021 18:15:19 GMT
-Date: Sun, 03 Jan 2021 18:15:19 GMT
-< Content-Length: 0
-Content-Length: 0
-
-<
-* Closing connection 0
-* Issue another request to this URL: 'https://your.example.com/'
+```
+* Issue another request to this URL: 'https://test.ionut.vip/'
 *   Trying 127.0.0.1:443...
-* Connected to your.example.com (127.0.0.1) port 443 (#1)
+* Connected to test.ionut.vip (127.0.0.1) port 443 (#1)
 * ALPN, offering h2
 * ALPN, offering http/1.1
-* TLSv1.3 (OUT), TLS handshake, Client hello (1):
-* TLSv1.3 (IN), TLS handshake, Server hello (2):
-* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
-* TLSv1.3 (IN), TLS handshake, Certificate (11):
-* TLSv1.3 (IN), TLS handshake, CERT verify (15):
-* TLSv1.3 (IN), TLS handshake, Finished (20):
-* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
 * TLSv1.3 (OUT), TLS handshake, Finished (20):
 * SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256
 * ALPN, server accepted to use h2
 * Server certificate:
-*  subject: CN=your.example.com ########################################### CA from Let's Enctrypt Staging 
-*  start date: Jan  3 17:10:09 2021 GMT
-*  expire date: Apr  3 17:10:09 2021 GMT
-*  issuer: CN=Fake LE Intermediate X1. ####################################----> This is telling you that acme is working as expecting!
-*  SSL certificate verify result: unable to get local issuer certificate (20), continuing anyway.
+*  subject: CN=test.ionut.vip ################################ CA from Let's Enctrypt Staging 
+*  start date: Jan  5 15:15:00 2021 GMT
+*  expire date: Apr  5 15:15:00 2021 GMT
+*  issuer: CN=Fake LE Intermediate X1######################### This is telling you that acme is working as expecting!  
 * Using HTTP2, server supports multi-use
 * Connection state changed (HTTP/2 confirmed)
 * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
-* Using Stream ID: 1 (easy handle 0x7fa754813e00)
+* Using Stream ID: 1 (easy handle 0x7f917580fe00)
 > GET / HTTP/2
-> Host: your.example.com
+> Host: test.ionut.vip
 > user-agent: curl/7.74.0
 > accept: */*
->
 * TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
 * Connection state changed (MAX_CONCURRENT_STREAMS == 250)!
 < HTTP/2 200
-HTTP/2 200
 < content-type: text/plain; charset=utf-8
-content-type: text/plain; charset=utf-8
-< date: Sun, 03 Jan 2021 18:15:19 GMT
-date: Sun, 03 Jan 2021 18:15:19 GMT
+< date: Tue, 05 Jan 2021 16:19:33 GMT
 < server: Caddy
-server: Caddy
-< content-length: 17
-content-length: 17
-
-<
-I'm YourBigBoss. ######################################################-------> Reply from whoiam container.
-* Connection #1 to host your.example.com left intact
+< content-length: 16
+I'm TheDocker################################### Expected result from hostname above
 ```
 
 :hearts: On the status column of the docker, you will notice the `healthy` word. This is telling you that docker is running [healtcheck](https://scoutapm.com/blog/how-to-use-docker-healthcheck) itself in order to make sure it is working properly. 
