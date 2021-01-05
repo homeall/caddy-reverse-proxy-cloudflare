@@ -59,6 +59,8 @@
 
 ### Prerequisites
 
+[![Made with Docker !](https://img.shields.io/badge/Made%20with-Docker-blue)](https://github.com/homeall/caddy-reverse-proxy-cloudflare/blob/main/Dockerfile)
+
 :eight_spoked_asterisk: You will need to have:
 
 * :whale: [Docker](https://docs.docker.com/engine/install/)
