@@ -131,6 +131,7 @@ $  curl --insecure -vvI https://test.ionut.vip 2>&1 | awk 'BEGIN { cert=0 } /^\*
 $  curl -k https://test.ionut.vip
 I'm TheDocker################################### Expected result from hostname above
 ```
+![](./assets/caddy-reverse-proxy.gif)
 
 :hearts: On the status column of the docker, you will notice the `healthy` word. This is telling you that docker is running [healtcheck](https://scoutapm.com/blog/how-to-use-docker-healthcheck) itself in order to make sure it is working properly. 
 
