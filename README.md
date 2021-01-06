@@ -120,7 +120,7 @@ $  curl --insecure -vvI https://test.ionut.vip 2>&1 | awk 'BEGIN { cert=0 } /^\*
 *  subject: CN=test.ionut.vip ################################ CA from Let's Enctrypt Staging 
 *  start date: Jan  5 15:15:00 2021 GMT
 *  expire date: Apr  5 15:15:00 2021 GMT
-*  issuer: CN=Fake LE Intermediate X1 ######################## This is telling you that acme is working as expecting!
+*  issuer: CN=Fake LE Intermediate X1 ######################## This is telling you that acme is working as expected!
 *  SSL certificate verify result: unable to get local issuer certificate (20), continuing anyway.
 * Using HTTP2, server supports multi-use
 * Connection state changed (HTTP/2 confirmed)
