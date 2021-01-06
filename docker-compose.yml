@@ -17,7 +17,7 @@ services:
   whoami0:
     container_name: whoiam
     image: jwilder/whoami:latest
-    hostname: YourBigBoss ############################----->>Expected result using curl
+    hostname: TheDocker ############################----->>Expected result using curl
     restart: unless-stopped
     labels:
       caddy: your.example.com #### needs for caddy to redirect traffic
