@@ -101,6 +101,8 @@ services:
     restart: unless-stopped
     labels:
       caddy: your.example.com #### needs for caddy to redirect traffic
+      # caddy.servers.protocols: "experimental_http3" #### For HTTP/3
+      # caddy.tls.ca: "https://acme.zerossl.com/v2/DV90" ### Only if you will prefer ZeroSSL. Default it is Let's Encypt.
       caddy.reverse_proxy: "{{upstreams 8000}}" #### needs to tell caddy which port number should send traffic
       caddy.tls.protocols: "tls1.3" #### This is optional. Default it is tls1.2
       caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # Needs only for testing purpose. Remove this line after you finished your tests.
