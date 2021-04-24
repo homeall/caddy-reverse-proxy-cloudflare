@@ -85,6 +85,8 @@ services:
     container_name: caddy
     image: homeall/caddy-reverse-proxy-cloudflare:latest
     restart: unless-stopped
+    environment:
+      TZ: 'Europe/London'
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock" #### needs socket to read events
       - "./caddy-data:/data" #### needs volume to back up certificates
