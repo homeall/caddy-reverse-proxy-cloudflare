@@ -22,7 +22,7 @@ FROM alpine:${ALPINE_VERSION}
 ARG GOLANG_VERSION
 ARG ALPINE_VERSION
 
-RUN apk add -U --no-cache ca-certificates curl
+RUN apk add -U --no-cache ca-certificates curl tzdata
 
 LABEL maintainer "HomeAll"
 
