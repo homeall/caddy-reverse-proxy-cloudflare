@@ -1,4 +1,4 @@
-ARG GOLANG_VERSION=1.15
+ARG GOLANG_VERSION=1.16
 ARG ALPINE_VERSION=3.13
 
 FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} as gobuild
@@ -6,7 +6,7 @@ ARG GOLANG_VERSION
 ARG ALPINE_VERSION
 
 RUN apk add --no-cache git gcc build-base; \
-	go get -v github.com/caddyserver/xcaddy/cmd/xcaddy
+	go install github.com/caddyserver/xcaddy/cmd/xcaddy
 
 WORKDIR /go/src/github.com/caddyserver/xcaddy/cmd/xcaddy
 
