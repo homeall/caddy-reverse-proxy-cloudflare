@@ -5,10 +5,10 @@ FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} as gobuild
 ARG GOLANG_VERSION
 ARG ALPINE_VERSION
 
+WORKDIR /go/src/github.com/caddyserver/xcaddy/cmd/xcaddy
+
 RUN apk add --no-cache git gcc build-base; \
 	go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-
-WORKDIR /go/src/github.com/caddyserver/xcaddy/cmd/xcaddy
 
 RUN  xcaddy build \
 	 --output /go/src/github.com/caddyserver/xcaddy/cmd/caddy \
