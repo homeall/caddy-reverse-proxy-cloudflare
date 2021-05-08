@@ -20,7 +20,7 @@ FROM alpine:${ALPINE_VERSION}
 ARG GOLANG_VERSION
 ARG ALPINE_VERSION
 
-RUN apk add -U --no-cache ca-certificates curl tzdata; \
+RUN apk add --no-cache ca-certificates curl tzdata; \
              rm -rf /var/cache/apk/*;
 
 LABEL maintainer "HomeAll"
