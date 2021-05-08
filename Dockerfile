@@ -6,7 +6,7 @@ ARG GOLANG_VERSION
 ARG ALPINE_VERSION
 
 RUN apk add --no-cache git gcc build-base; \
-	go install github.com/caddyserver/xcaddy/cmd/xcaddy
+	go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 
 WORKDIR /go/src/github.com/caddyserver/xcaddy/cmd/xcaddy
 
