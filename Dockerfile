@@ -12,7 +12,7 @@ RUN apk add --no-cache git gcc build-base; \
 
 RUN  xcaddy build \
 	 --output /go/src/github.com/caddyserver/xcaddy/cmd/caddy \
-	 --with github.com/lucaslorentz/caddy-docker-proxy/plugin/v2 \
+	 --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
 	 --with github.com/caddy-dns/cloudflare
 
 FROM alpine:${ALPINE_VERSION}
