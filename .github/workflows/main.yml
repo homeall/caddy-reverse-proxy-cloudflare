@@ -36,8 +36,3 @@ jobs:
           push: true
           tags: |
             homeall/caddy-reverse-proxy-cloudflare:latest
-
-      - name: Create github release
-        uses: ncipollo/release-action@v1.1.0
-        with:
-          makeLatest: true
