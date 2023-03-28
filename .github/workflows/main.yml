@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Set env
+        run: echo "TAG=$(echo $(date +%Y.%m.%d))" >> $GITHUB_ENV
+
       - name: Docker Login
         uses: docker/login-action@v2.1.0
         with:
@@ -36,3 +39,10 @@ jobs:
           push: true
           tags: |
             homeall/caddy-reverse-proxy-cloudflare:latest
+
+      - name: Create github release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          tag: ${{ env.TAG }}
+          allowUpdates: true
+          makeLatest: true
