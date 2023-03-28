@@ -28,7 +28,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -36,3 +36,8 @@ jobs:
           push: true
           tags: |
             homeall/caddy-reverse-proxy-cloudflare:latest
+
+      - name: Create github release
+        uses: ncipollo/release-action@v1.1.0
+        with:
+          makeLatest: true
