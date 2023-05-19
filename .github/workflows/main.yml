@@ -39,6 +39,7 @@ jobs:
           push: true
           tags: |
             homeall/caddy-reverse-proxy-cloudflare:latest
+            homeall/caddy-reverse-proxy-cloudflare:${{ env.TAG }}
 
       - name: Create github release
         uses: ncipollo/release-action@v1.12.0
