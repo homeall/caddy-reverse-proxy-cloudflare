@@ -2,16 +2,16 @@
 
 # Table of Contents
 
--   [Supported Versions](#supported-versions)
--   [Reporting a Vulnerability](#reporting-a-vulnerability)
--   [Disclosure Policy](#disclosure-policy)
--   [Process](#process)
--   [Preferences for Responsible Disclosure](#preferences-for-responsible-disclosure)
--   [License](#license)
+- [Supported Versions](#supported-versions)
+- [Reporting a Vulnerability](#reporting-a-vulnerability)
+- [Disclosure Policy](#disclosure-policy)
+- [Process](#process)
+- [Preferences for Responsible Disclosure](#preferences-for-responsible-disclosure)
+- [License](#license)
 
 ## Supported Versions
 
-The only versions of our project currently being supported with security updates are:
+The only versions of our *project currently* being supported with security updates are:
 
 `1.0.0`
 
@@ -23,16 +23,16 @@ We encourage you to notify us if've found a security vulnerability in our produc
 
 ## Disclosure Policy
 
--   Please let us know as soon as possible when you find a potential security issue, and we'll make every effort to quickly resolve the issue.
--   Provide us a reasonable amount of time to resolve the issue before any disclosure to the public or a third-party.
--   Make a good faith effort to avoid privacy violations, destruction of data, and interruption or degradation of our service during your research.
+- Please let us know as soon as possible when you find a potential security issue, and we'll make every effort to quickly resolve the issue.
+- Provide us a reasonable amount of time to resolve the issue before any disclosure to the public or a third-party.
+- Make a good faith effort to avoid privacy violations, destruction of data, and interruption or degradation of our service during your research.
 
 ## Process
 
--   Open a new issue in our GitHub repository with the details of the potential vulnerability. Please use as much detail as possible.
--   We will respond acknowledging receipt of your vulnerability report.
--   Our team will investigate the issue and develop an update or patch.
--   Once we have resolved the issue, we may provide acknowledgement in the commit message and in our public-facing documentation, if you grant us permission to do so.
+- Open a new issue in our GitHub repository with the details of the potential vulnerability. Please use as much detail as possible.
+- We will respond acknowledging receipt of your vulnerability report.
+- Our team will investigate the issue and develop an update or patch.
+- Once we have resolved the issue, we may provide acknowledgement in the commit message and in our public-facing documentation, if you grant us permission to do so.
 
 Please note, the issues tracker is only for reporting vulnerabilities. For regular bugs and issues, please use the standard issue tracker.
 
