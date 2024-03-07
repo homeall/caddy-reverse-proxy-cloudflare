@@ -47,6 +47,8 @@ The main purpose of creating this image is to have DNS challenge for **wildcard 
 
 I am using GitHub Actions where it will update weekly docker image and both plugins.
 
+It also can keep the IP address up to date thanks to [Caddy DynamicDNS](https://github.com/mholt/caddy-dynamicdns).
+
 :interrobang: Note: you will need **the scoped API token** for this setup. Please analyze this **[link](https://github.com/libdns/cloudflare#authenticating)**.
 
 
