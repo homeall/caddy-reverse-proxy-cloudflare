@@ -1,0 +1,78 @@
+Results of cspell linter (version 8.3.2)
+See documentation on https://megalinter.io/7.9.0/descriptors/spell_cspell/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /github/workspace
+Linter raw log:
+1/5 ./CONTRIBUTING.md 516.22ms
+2/5 ./docker-compose.yml 281.72ms X
+./docker-compose.yml:6:12      - Unknown word (homeall)    -- image: homeall/caddy-reverse-proxy
+	 Suggestions: [homely, howell, holdall, Howell, hemal]
+./docker-compose.yml:20:21     - Unknown word (whoiam)     -- container_name: whoiam
+	 Suggestions: [wham, whim, whoa, whom, whoami]
+./docker-compose.yml:21:12     - Unknown word (jwilder)    -- image: jwilder/whoami:latest
+	 Suggestions: [wilder, Wilder, jailer, jilter, joinder]
+3/5 ./Dockerfile 354.18ms X
+./Dockerfile:4:58      - Unknown word (gobuild)    -- {ALPINE_VERSION} as gobuild
+	 Suggestions: [gould, guild, Gould, build, ebuild]
+./Dockerfile:8:28      - Unknown word (caddyserver) -- WORKDIR /go/src/github.com/caddyserver/xcaddy/cmd/xcaddy
+	 Suggestions: []
+./Dockerfile:8:40      - Unknown word (xcaddy)      -- github.com/caddyserver/xcaddy/cmd/xcaddy
+	 Suggestions: [caddy, xcad, XCAD, baddy, cadgy]
+./Dockerfile:8:51      - Unknown word (xcaddy)      -- caddyserver/xcaddy/cmd/xcaddy
+	 Suggestions: [caddy, xcad, XCAD, baddy, cadgy]
+./Dockerfile:11:24     - Unknown word (caddyserver) -- go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+	 Suggestions: []
+./Dockerfile:11:36     - Unknown word (xcaddy)      -- github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+	 Suggestions: [caddy, xcad, XCAD, baddy, cadgy]
+./Dockerfile:11:47     - Unknown word (xcaddy)      -- caddyserver/xcaddy/cmd/xcaddy@latest
+	 Suggestions: [caddy, xcad, XCAD, baddy, cadgy]
+./Dockerfile:13:6      - Unknown word (xcaddy)      -- RUN xcaddy build \
+	 Suggestions: [caddy, xcad, XCAD, baddy, cadgy]
+./Dockerfile:14:31     - Unknown word (caddyserver) -- output /go/src/github.com/caddyserver/xcaddy/cmd/caddy \
+	 Suggestions: []
+./Dockerfile:15:21     - Unknown word (lucaslorentz) -- --with github.com/lucaslorentz/caddy-docker-proxy/v
+	 Suggestions: []
+./Dockerfile:23:45     - Unknown word (tzdata)       -- ca-certificates curl tzdata; \
+	 Suggestions: [tata, Tata, data, cdata, Data]
+./Dockerfile:34:13     - Unknown word (gobuild)      -- COPY --from=gobuild /go/src/github.com/caddyserve
+	 Suggestions: [gould, guild, Gould, build, ebuild]
+./Dockerfile:34:40     - Unknown word (caddyserver)  -- gobuild /go/src/github.com/caddyserver/xcaddy/cmd/caddy /bin
+	 Suggestions: []
+4/5 ./fb4db528-f223-48c7-b3c6-69c75e600751-megalinter_file_names_cspell.txt 2.88ms
+5/5 ./SECURITY.md 231.05ms X
+./SECURITY.md:22:31     - Unknown word (if've)      -- encourage you to notify us if've found a security vulnerabilit
+	 Suggestions: [i've, I've, five, if's, i'd've]
+CSpell: Files checked: 5, Issues found: 17 in 3 files
+
+
+You can skip this misspellings by defining the following .cspell.json file at the root of your repository
+Of course, please correct real typos before :)
+
+{
+    "version": "0.2",
+    "language": "en",
+    "ignorePaths": [
+        "**/node_modules/**",
+        "**/vscode-extension/**",
+        "**/.git/**",
+        "**/.pnpm-lock.json",
+        ".vscode",
+        "package-lock.json",
+        "megalinter-reports"
+    ],
+    "words": [
+        "caddyserver",
+        "gobuild",
+        "homeall",
+        "if've",
+        "jwilder",
+        "lucaslorentz",
+        "tzdata",
+        "whoiam",
+        "xcaddy"
+    ]
+}
+
+
+You can also copy-paste megalinter-reports/.cspell.json at the root of your repository

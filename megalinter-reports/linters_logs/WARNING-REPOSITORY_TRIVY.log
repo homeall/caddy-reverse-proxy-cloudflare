@@ -1,0 +1,31 @@
+Results of trivy linter (version 0.49.1)
+See documentation on https://megalinter.io/7.9.0/descriptors/repository_trivy/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /github/workspace
+Linter raw log:
+2024-03-07T08:55:36.329Z	WARN	'--scanners config' is deprecated. Use '--scanners misconfig' instead. See https://github.com/aquasecurity/trivy/discussions/5586 for the detail.
+2024-03-07T08:55:36.339Z	INFO	Need to update DB
+2024-03-07T08:55:36.339Z	INFO	DB Repository: ghcr.io/aquasecurity/trivy-db
+2024-03-07T08:55:36.339Z	INFO	Downloading DB...
+32.02 MiB / 42.44 MiB [---------------------------------------------->______________] 75.46% ? p/s ?42.44 MiB / 42.44 MiB [----------------------------------------------------------->] 100.00% ? p/s ?42.44 MiB / 42.44 MiB [----------------------------------------------------------->] 100.00% ? p/s ?42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 17.35 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 17.35 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 17.35 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 16.23 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 16.23 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 16.23 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 15.18 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 15.18 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 15.18 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [---------------------------------------------->] 100.00% 14.21 MiB p/s ETA 0s42.44 MiB / 42.44 MiB [-------------------------------------------------] 100.00% 17.01 MiB p/s 2.7s2024-03-07T08:55:39.307Z	INFO	Vulnerability scanning is enabled
+2024-03-07T08:55:39.307Z	INFO	Misconfiguration scanning is enabled
+2024-03-07T08:55:39.307Z	INFO	Need to update the built-in policies
+2024-03-07T08:55:39.307Z	INFO	Downloading the built-in policies...
+46.13 KiB / 46.13 KiB [-----------------------------------------------------------] 100.00% ? p/s 0s2024-03-07T08:55:41.985Z	INFO	Number of language-specific files: 0
+2024-03-07T08:55:41.985Z	INFO	Detected config files: 1
+
+Dockerfile (dockerfile)
+=======================
+Tests: 27 (SUCCESSES: 26, FAILURES: 1, EXCEPTIONS: 0)
+Failures: 1 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 1, CRITICAL: 0)
+
+HIGH: Specify at least 1 USER command in Dockerfile with non-root user as argument
+════════════════════════════════════════
+Running containers with 'root' user can lead to a container escape situation. It is a best practice to run containers as non-root users, which can be done by adding a 'USER' statement to the Dockerfile.
+
+See https://avd.aquasec.com/misconfig/ds002
+────────────────────────────────────────
+
+
+

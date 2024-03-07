@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "streetsidesoftware.code-spell-checker",
+        "exiasr.hadolint",
+        "MS-CST-E.vscode-devskim",
+        "Bridgecrew.checkov",
+        "esbenp.prettier-vscode",
+        "AquaSecurityOfficial.trivy-vulnerability-scanner"
+    ]
+}

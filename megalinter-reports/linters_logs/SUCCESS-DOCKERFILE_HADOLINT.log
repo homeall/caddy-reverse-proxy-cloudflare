@@ -1,0 +1,5 @@
+Results of hadolint linter (version 2.12.0)
+See documentation on https://megalinter.io/7.9.0/descriptors/dockerfile_hadolint/
+-----------------------------------------------
+
+✅ [SUCCESS] for workspace /github/workspace

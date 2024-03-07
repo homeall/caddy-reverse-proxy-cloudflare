@@ -1,0 +1,319 @@
+Results of kics linter (version 1.7.12)
+See documentation on https://megalinter.io/7.9.0/descriptors/repository_kics/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /github/workspace
+Linter raw log:
+
+                   .0MO.                                    
+                   OMMMx                                    
+                   ;NMX;                                    
+                    ...           ...              ....     
+WMMMd     cWMMM0.  KMMMO      ;xKWMMMMNOc.     ,xXMMMMMWXkc.
+WMMMd   .0MMMN:    KMMMO    :XMMMMMMMMMMMWl   xMMMMMWMMMMMMl
+WMMMd  lWMMMO.     KMMMO   xMMMMKc...'lXMk   ,MMMMx   .;dXx 
+WMMMd.0MMMX;       KMMMO  cMMMMd        '    'MMMMNl'       
+WMMMNWMMMMl        KMMMO  0MMMN               oMMMMMMMXkl.  
+WMMMMMMMMMMo       KMMMO  0MMMX                .ckKWMMMMMM0.
+WMMMMWokMMMMk      KMMMO  oMMMMc              .     .:OMMMM0
+WMMMK.  dMMMM0.    KMMMO   KMMMMx'    ,kNc   :WOc.    .NMMMX
+WMMMd    cWMMMX.   KMMMO    kMMMMMWXNMMMMMd .WMMMMWKO0NMMMMl
+WMMMd     ,NMMMN,  KMMMO     'xNMMMMMMMNx,   .l0WMMMMMMMWk, 
+xkkk:      ,kkkkx  okkkl        ;xKXKx;          ;dOKKkc    
+
+
+Scanning with Keeping Infrastructure as Code Secure v1.7.12
+
+
+
+Files scanned: 4
+Parsed files: 4
+Queries loaded: 74
+Queries failed to execute: 0
+
+------------------------------------
+
+Cpus Not Limited, Severity: LOW, Results: 2
+Description: CPU limits should be set because if the system has CPU time free, a container is guaranteed to be allocated as much CPU as it requests
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/6b610c50-99fb-4ef0-a5f3-e312fd945bc3
+
+	[1]: docker-compose.yml:4
+
+		003: services:
+		004:   caddy:
+		005:     container_name: caddy
+
+
+	[2]: docker-compose.yml:19
+
+		018: 
+		019:   whoami0:
+		020:     container_name: whoiam
+
+
+Container Capabilities Unrestricted, Severity: LOW, Results: 2
+Description: Some capabilities are not needed in certain (or any) containers. Make sure that you only add capabilities that your container needs. Drop unnecessary capabilities as well.
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/ce76b7d0-9e77-464d-b86f-c5c48e03e22d
+
+	[1]: docker-compose.yml:19
+
+		018: 
+		019:   whoami0:
+		020:     container_name: whoiam
+
+
+	[2]: docker-compose.yml:4
+
+		003: services:
+		004:   caddy:
+		005:     container_name: caddy
+
+
+Unpinned Package Version in Apk Add, Severity: MEDIUM, Results: 2
+Description: Package version pinning reduces the range of versions that can be installed, reducing the chances of failure due to unanticipated changes
+Platform: Dockerfile
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockerfile-queries/d3499f6d-1651-41bb-a9a7-de925fea487b
+
+	[1]: Dockerfile:10
+
+		009: 
+		010: RUN apk add --no-cache git gcc build-base; 	go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+		011: 
+
+
+	[2]: Dockerfile:23
+
+		022: 
+		023: RUN apk add --no-cache ca-certificates curl tzdata;              rm -rf /var/cache/apk/*;
+		024: 
+
+
+Unpinned Actions Full Length Commit SHA, Severity: MEDIUM, Results: 8
+Description: Pinning an action to a full length commit SHA is currently the only way to use an action as an immutable release. Pinning to a particular SHA helps mitigate the risk of a bad actor adding a backdoor to the action's repository, as they would need to generate a SHA-1 collision for a valid Git object payload. When selecting a SHA, you should verify it is from the action's repository and not a repository fork.
+Platform: CICD
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/cicd-queries/555ab8f9-2001-455e-a077-f2d0f41e2fb9
+
+	[1]: .github/workflows/main.yml:45
+
+		044:       - name: Create github release
+		045:         uses: ncipollo/release-action@v1.13.0
+		046:         with:
+
+
+	[2]: .github/workflows/main.yml:21
+
+		020:       - name: Docker Login
+		021:         uses: docker/login-action@v2.2.0
+		022:         with:
+
+
+	[3]: .github/workflows/mega-linter.yml:45
+
+		044:           # More info at https://megalinter.io/flavors/
+		045:           uses: oxsecurity/megalinter@v7
+		046:           env:
+
+
+	[4]: .github/workflows/mega-linter.yml:86
+
+		085:           if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'commit' && github.ref != 'refs/heads/main' && (github.event_name == 'push' || github.even
+		086:           uses: stefanzweifel/git-auto-commit-action@v4
+		087:           with:
+
+
+	[5]: .github/workflows/main.yml:34
+
+		033:       - name: Build and push
+		034:         uses: docker/build-push-action@v5
+		035:         with:
+
+
+	[6]: .github/workflows/main.yml:27
+
+		026:       - name: Set up QEMU
+		027:         uses: docker/setup-qemu-action@v3.0.0
+		028: 
+
+
+	[7]: .github/workflows/mega-linter.yml:68
+
+		067:           if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'pull_request' && (github.event_name == 'push' || github.event.pull_request.head.repo.full
+		068:           uses: peter-evans/create-pull-request@v5
+		069:           with:
+
+
+	[8]: .github/workflows/main.yml:31
+
+		030:         id: buildx
+		031:         uses: docker/setup-buildx-action@v3.0.0
+		032: 
+
+
+Security Opt Not Set, Severity: MEDIUM, Results: 2
+Description: Attribute 'security_opt' should be defined.
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/610e266e-6c12-4bca-9925-1ed0cd29742b
+
+	[1]: docker-compose.yml:19
+
+		018: 
+		019:   whoami0:
+		020:     container_name: whoiam
+
+
+	[2]: docker-compose.yml:4
+
+		003: services:
+		004:   caddy:
+		005:     container_name: caddy
+
+
+Privileged Ports Mapped In Container, Severity: MEDIUM, Results: 1
+Description: Privileged ports (1 to 1023) should not be mapped. Also you should drop net_bind_service linux capability from the container unless you absolutely need to use priviledged ports.
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/bc2908f3-f73c-40a9-8793-c1b7d5544f79
+
+	[1]: docker-compose.yml:13
+
+		012:       - "./caddy-data:/data" #### needs volume to back up certificates
+		013:     ports:
+		014:       - "80:80"
+
+
+Networks Not Set, Severity: MEDIUM, Results: 2
+Description: Setting networks in services ensures you are not using dockers default bridge (docker0), which shares traffic bewteen all containers.
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/ce14a68b-1668-41a0-ab7d-facd9f784742
+
+	[1]: docker-compose.yml:19
+
+		018: 
+		019:   whoami0:
+		020:     container_name: whoiam
+
+
+	[2]: docker-compose.yml:4
+
+		003: services:
+		004:   caddy:
+		005:     container_name: caddy
+
+
+Memory Not Limited, Severity: MEDIUM, Results: 2
+Description: Memory limits should be defined for each container. This prevents potential resource exhaustion by ensuring that containers consume not more than the designated amount of memory
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/bb9ac4f7-e13b-423d-a010-c74a1bfbe492
+
+	[1]: docker-compose.yml:19
+
+		018: 
+		019:   whoami0:
+		020:     container_name: whoiam
+
+
+	[2]: docker-compose.yml:4
+
+		003: services:
+		004:   caddy:
+		005:     container_name: caddy
+
+
+Host Namespace is Shared, Severity: MEDIUM, Results: 2
+Description: The hosts process namespace should not be shared by containers
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/4f31dd9f-2cc3-4751-9b53-67e4af83dac0
+
+	[1]: docker-compose.yml:4
+
+		003: services:
+		004:   caddy:
+		005:     container_name: caddy
+
+
+	[2]: docker-compose.yml:19
+
+		018: 
+		019:   whoami0:
+		020:     container_name: whoiam
+
+
+Healthcheck Not Set, Severity: MEDIUM, Results: 2
+Description: Check containers periodically to see if they are running properly.
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/698ed579-b239-4f8f-a388-baa4bcb13ef8
+
+	[1]: docker-compose.yml:19
+
+		018: 
+		019:   whoami0:
+		020:     container_name: whoiam
+
+
+	[2]: docker-compose.yml:4
+
+		003: services:
+		004:   caddy:
+		005:     container_name: caddy
+
+
+Container Traffic Not Bound To Host Interface, Severity: MEDIUM, Results: 1
+Description: Incoming container traffic should be bound to a specific host interface
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/451d79dc-0588-476a-ad03-3c7f0320abb3
+
+	[1]: docker-compose.yml:13
+
+		012:       - "./caddy-data:/data" #### needs volume to back up certificates
+		013:     ports:
+		014:       - "80:80"
+
+
+Volume Has Sensitive Host Directory, Severity: HIGH, Results: 1
+Description: Container has sensitive host directory mounted as a volume
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/1c1325ff-831d-43a1-973e-839ae57dfcc0
+
+	[1]: docker-compose.yml:11
+
+		010:     volumes:
+		011:       - "/var/run/docker.sock:/var/run/docker.sock" #### needs socket to read events
+		012:       - "./caddy-data:/data" #### needs volume to back up certificates
+
+
+Missing User Instruction, Severity: HIGH, Results: 1
+Description: A user should be specified in the dockerfile, otherwise the image will run as root
+Platform: Dockerfile
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockerfile-queries/fd54f200-402c-4333-a5a4-36ef6709af2f
+
+	[1]: Dockerfile:18
+
+		017: 
+		018: FROM alpine:${ALPINE_VERSION}
+		019: 
+
+
+Docker Socket Mounted In Container, Severity: HIGH, Results: 1
+Description: Docker socket docker.sock should not be mounted on host. If the docker socket is mounted, it can allow its processes to execute docker commands.
+Platform: DockerCompose
+Learn more about this vulnerability: https://docs.kics.io/latest/queries/dockercompose-queries/d6355c88-1e8d-49e9-b2f2-f8a1ca12c75b
+
+	[1]: docker-compose.yml:11
+
+		010:     volumes:
+		011:       - "/var/run/docker.sock:/var/run/docker.sock" #### needs socket to read events
+		012:       - "./caddy-data:/data" #### needs volume to back up certificates
+
+
+
+Results Summary:
+HIGH: 3
+MEDIUM: 22
+LOW: 4
+INFO: 0
+TOTAL: 29
+
+Scan duration: 4.757011986s
+A new version 'v1.7.13' of KICS is available, please consider updating
+
