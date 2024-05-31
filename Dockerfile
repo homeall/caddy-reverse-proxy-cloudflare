@@ -14,6 +14,7 @@ RUN  xcaddy build \
 	 --output /go/src/github.com/caddyserver/xcaddy/cmd/caddy \
 	 --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
 	 --with github.com/mholt/caddy-dynamicdns \
+	 --with github.com/acouvreur/sablier@v1.6.1 \
 	 --with github.com/caddy-dns/cloudflare
 
 FROM alpine:${ALPINE_VERSION}
