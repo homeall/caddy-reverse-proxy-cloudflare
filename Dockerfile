@@ -10,12 +10,14 @@ WORKDIR /go/src/github.com/caddyserver/xcaddy/cmd/xcaddy
 RUN apk add --no-cache git gcc build-base; \
 	go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 
+
+
 RUN  xcaddy build \
 	 --output /go/src/github.com/caddyserver/xcaddy/cmd/caddy \
 	 --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
 	 --with github.com/mholt/caddy-dynamicdns \
-	 --with github.com/acouvreur/sablier@v1.6.1 \
-	 --with github.com/caddy-dns/cloudflare
+	 --with github.com/caddy-dns/cloudflare \
+	 --with github.com/acouvreur/sablier/plugins/caddy=.
 
 FROM alpine:${ALPINE_VERSION}
 
