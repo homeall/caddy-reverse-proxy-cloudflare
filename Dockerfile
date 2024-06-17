@@ -10,7 +10,7 @@ WORKDIR /go/src/github.com/caddyserver/xcaddy/cmd/xcaddy
 RUN apk add --no-cache git gcc build-base; \
 	go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 
-ADD https://github.com/acouvreur/sablier.git#v1.6.1 /sablier
+ADD https://github.com/acouvreur/sablier.git#v1.7.0 /sablier
 
 RUN  xcaddy build \
 	 --output /go/src/github.com/caddyserver/xcaddy/cmd/caddy \
