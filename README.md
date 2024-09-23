@@ -90,27 +90,28 @@ services:
     environment:
       TZ: 'Europe/London'
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock" #### needs socket to read events
-      - "./caddy-data:/data" #### needs volume to back up certificates
+      - "/var/run/docker.sock:/var/run/docker.sock"      # needs socket to read events
+      - "./caddy-data:/data"                             # needs volume to back up certificates
     ports:
       - "80:80"
       - "443:443"
-    labels: # Global options
-      caddy.email: email@example.com #### needs for acme CERT registration account
+    labels:                                              # Global options
+      caddy.email: email@example.com                     # needs for acme CERT registration account
+      caddy.acme_dns: "cloudflare $API_TOKEN"            # When set here, you don't need to set it for each service individually
 
   whoami0:
     container_name: whoiam
     image: jwilder/whoami:latest
-    hostname: TheDocker ############################----->>Expected result using curl
+    hostname: TheDocker #----->>Expected result using curl
     restart: unless-stopped
     labels:
-      caddy: your.example.com #### needs for caddy to redirect traffic
-      # caddy.servers.protocols: "experimental_http3" #### For HTTP/3
-      # caddy.tls.ca: "https://acme.zerossl.com/v2/DV90" ### Only if you will prefer ZeroSSL. Default it is Let's Encypt.
-      caddy.reverse_proxy: "{{upstreams 8000}}" #### needs to tell caddy which port number should send traffic
-      caddy.tls.protocols: "tls1.3" #### This is optional. Default it is tls1.2
+      caddy: your.example.com                            # needs for caddy to redirect traffic
+      # caddy.servers.protocols: "experimental_http3"    # For HTTP/3
+      # caddy.tls.ca: "https://acme.zerossl.com/v2/DV90" # Only if you will prefer ZeroSSL. Default it is Let's Encrypt.
+      caddy.reverse_proxy: "{{upstreams 8000}}"          # needs to tell caddy which port number should send traffic
+      caddy.tls.protocols: "tls1.3"                      # This is optional. Default it is tls1.2
       caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # Needs only for testing purpose. Remove this line after you finished your tests.
-      caddy.tls.dns: "cloudflare $API-TOKEN" #### You will have to replace here $API-TOKEN with your real scoped API token from Cloudflare.
+      caddy.tls.dns: "cloudflare $API-TOKEN"             # (Optional when using global setting) You will have to replace here $API-TOKEN with your real scoped API token from Cloudflare.
 ```
 > Please get your scoped API-Token from  **[here](https://github.com/libdns/cloudflare#authenticating)**.
 
