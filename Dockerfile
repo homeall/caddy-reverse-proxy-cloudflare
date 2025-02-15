@@ -9,9 +9,9 @@ RUN xcaddy build \
 	 --with github.com/mholt/caddy-dynamicdns \
 	 --with github.com/mholt/caddy-ratelimit \
          --with github.com/mholt/caddy-l4 \
-#	 --with github.com/WeidiDeng/caddy-cloudflare-ip \
-#	 --with github.com/porech/caddy-maxmind-geolocation \
-#	 --with github.com/caddyserver/transform-encoder \
+	 --with github.com/WeidiDeng/caddy-cloudflare-ip \
+	 --with github.com/porech/caddy-maxmind-geolocation \
+	 --with github.com/caddyserver/transform-encoder \
          --with github.com/hslatman/caddy-crowdsec-bouncer/http \
 	 --with github.com/hslatman/caddy-crowdsec-bouncer/appsec \
          --with github.com/hslatman/caddy-crowdsec-bouncer/layer4 \
