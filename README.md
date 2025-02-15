@@ -95,6 +95,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"                                    # Enable HTTP/3
     labels:                                              # Global options
       caddy.email: email@example.com                     # needs for acme CERT registration account
       caddy.acme_dns: "cloudflare $API_TOKEN"            # When set here, you don't need to set it for each service individually
@@ -106,7 +107,6 @@ services:
     restart: unless-stopped
     labels:
       caddy: your.example.com                            # needs for caddy to redirect traffic
-      # caddy.servers.protocols: "experimental_http3"    # For HTTP/3
       # caddy.tls.ca: "https://acme.zerossl.com/v2/DV90" # Only if you will prefer ZeroSSL. Default it is Let's Encrypt.
       caddy.reverse_proxy: "{{upstreams 8000}}"          # needs to tell caddy which port number should send traffic
       caddy.tls.protocols: "tls1.3"                      # This is optional. Default it is tls1.2
@@ -114,6 +114,36 @@ services:
       caddy.tls.dns: "cloudflare $API-TOKEN"             # (Optional when using global setting) You will have to replace here $API-TOKEN with your real scoped API token from Cloudflare.
 ```
 > Please get your scoped API-Token from  **[here](https://github.com/libdns/cloudflare#authenticating)**.
+
+:tada: **NEW EXAMPLE**
+
+```
+services:
+  caddy:
+    container_name: caddy
+    image: homeall/caddy-reverse-proxy-cloudflare:latest
+    restart: always
+    environment:
+      TZ: 'Europe/London'
+      CADDY_DOCKER_CADDYFILE_PATH: '/config/caddy/Caddyfile'  # Useful if you need to Caddyfile config, not labels and very handy for reverse proxy outside of this docker.
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"      # needs socket to read events
+      - "./caddy-data:/data"                             # needs volume to back up certificates
+      - "./caddy-config:/config"                         # Caddyfile path
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"                                    # Enable HTTP/3
+    labels:                                              # Global options
+      caddy.email: email@example.com                     # needs for acme CERT registration account
+      caddy.acme_dns: "cloudflare $API_TOKEN"            # When set here, you don't need to set it for each service individually
+
+  whoami0:
+    container_name: whoiam
+    image: jwilder/whoami:latest
+    hostname: TheDocker #----->>Expected result using curl
+    restart: unless-stopped
+```
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
