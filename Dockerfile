@@ -3,10 +3,13 @@ ARG ALPINE_VERSION=3.21
 
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
-RUN  xcaddy build \
+RUN xcaddy build \
 	 --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
-         --with github.com/corazawaf/coraza-caddy/v2 \
 	 --with github.com/mholt/caddy-dynamicdns \
+#         --with github.com/hslatman/caddy-crowdsec-bouncer/http \
+#	 --with github.com/hslatman/caddy-crowdsec-bouncer/appsec \
+#         --with github.com/corazawaf/coraza-caddy/v2 \
+#	 --with github.com/pberkel/caddy-storage-redis \
 	 --with github.com/caddy-dns/cloudflare
 
 FROM alpine:${ALPINE_VERSION}
