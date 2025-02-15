@@ -17,7 +17,7 @@ RUN xcaddy build \
 #         --with github.com/corazawaf/coraza-caddy/v2 \
 	 --with github.com/pberkel/caddy-storage-redis \
          --with github.com/mholt/caddy-l4 \
-         --wwith github.com/hadi77ir/caddy-websockify \
+         --with github.com/hadi77ir/caddy-websockify \
 	 --with github.com/caddy-dns/cloudflare
 
 FROM alpine:${ALPINE_VERSION}
