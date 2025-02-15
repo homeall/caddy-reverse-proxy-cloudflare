@@ -4,7 +4,7 @@ ARG ALPINE_VERSION=3.21
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
 RUN xcaddy build \
-	 --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
+	 --with github.com/lucaslorentz/caddy-docker-proxy/v2@2.8.4 \
 	 --with github.com/mholt/caddy-dynamicdns \
 #	 --with github.com/mholt/caddy-ratelimit \
 #	 --with github.com/WeidiDeng/caddy-cloudflare-ip \
