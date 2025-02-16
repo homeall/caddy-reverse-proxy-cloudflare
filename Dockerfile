@@ -3,6 +3,13 @@ ARG ALPINE_VERSION=3.21
 
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
+#ADD https://github.com/fabriziosalmi/caddy-waf.git
+
+#RUN cd caddy-waf && \
+#    go mod tidy && \
+#    wget https://git.io/GeoLite2-Country.mmdb
+
+
 RUN xcaddy build \
 #	 --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
          --with github.com/lucaslorentz/caddy-docker-proxy/v2@7c489f0e193efaf57aaaed07da9cc713c55054d1 \
@@ -17,6 +24,8 @@ RUN xcaddy build \
 #	 --with github.com/hslatman/caddy-crowdsec-bouncer/appsec \
 #         --with github.com/hslatman/caddy-crowdsec-bouncer/layer4 \
 #         --with github.com/corazawaf/coraza-caddy/v2 \
+#          --with github.com/greenpau/caddy-security \
+#          --with github.com/fabriziosalmi/caddy-waf=./ \
 #	 --with github.com/pberkel/caddy-storage-redis \
 #         --with github.com/hadi77ir/caddy-websockify \
 	 --with github.com/caddy-dns/cloudflare
