@@ -25,8 +25,10 @@ FROM alpine:${ALPINE_VERSION}
 RUN apk add --no-cache ca-certificates curl tzdata; \
              rm -rf /var/cache/apk/*;
 
-LABEL maintainer="HomeAll" && \
-EXPOSE 80 443 2019 && \
+LABEL maintainer="HomeAll"
+
+EXPOSE 80 443 2019
+
 ENV XDG_CONFIG_HOME=/config XDG_DATA_HOME=/data
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
