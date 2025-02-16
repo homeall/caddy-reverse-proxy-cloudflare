@@ -16,18 +16,18 @@ RUN xcaddy build \
 	 --with github.com/mholt/caddy-dynamicdns \
          --with github.com/sablierapp/sablier/plugins/caddy \
 #	 --with github.com/mholt/caddy-ratelimit \
-#         --with github.com/mholt/caddy-l4 \
+#        --with github.com/mholt/caddy-l4 \
 #	 --with github.com/WeidiDeng/caddy-cloudflare-ip \
 #	 --with github.com/porech/caddy-maxmind-geolocation \
 	 --with github.com/caddyserver/transform-encoder \
          --with github.com/hslatman/caddy-crowdsec-bouncer/http \
 #	 --with github.com/hslatman/caddy-crowdsec-bouncer/appsec \
-#         --with github.com/hslatman/caddy-crowdsec-bouncer/layer4 \
-#         --with github.com/corazawaf/coraza-caddy/v2 \
-#          --with github.com/greenpau/caddy-security \
-#          --with github.com/fabriziosalmi/caddy-waf=./ \
+#        --with github.com/hslatman/caddy-crowdsec-bouncer/layer4 \
+#        --with github.com/corazawaf/coraza-caddy/v2 \
+#        --with github.com/greenpau/caddy-security \
+#        --with github.com/fabriziosalmi/caddy-waf=./ \
 #	 --with github.com/pberkel/caddy-storage-redis \
-#         --with github.com/hadi77ir/caddy-websockify \
+#        --with github.com/hadi77ir/caddy-websockify \
 	 --with github.com/caddy-dns/cloudflare
 
 FROM alpine:${ALPINE_VERSION}
