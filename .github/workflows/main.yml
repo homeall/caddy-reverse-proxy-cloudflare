@@ -70,8 +70,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           
       - name: Generate artifact attestation
         id: artifacts
@@ -90,7 +88,7 @@ jobs:
         run: |
           for tag in $TAGS; do
             echo "Signing ${tag}@${DIGEST}"
-            cosign sign --yes "${tag}@${DIGEST}"
+            COSIGN_EXPERIMENTAL=1 cosign sign --yes "${tag}@${DIGEST}"
           done
 
       - name: Create github release
