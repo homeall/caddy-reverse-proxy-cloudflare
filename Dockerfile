@@ -15,9 +15,10 @@ RUN xcaddy build \
          --with github.com/lucaslorentz/caddy-docker-proxy/v2@7c489f0e193efaf57aaaed07da9cc713c55054d1 \
 	 --with github.com/mholt/caddy-dynamicdns \
          --with github.com/sablierapp/sablier/plugins/caddy \
-	 --with github.com/gsmlg-dev/caddy-admin-ui@main \
-#         --with github.com/pberkel/caddy-storage-redis \
 	 --with github.com/hslatman/caddy-crowdsec-bouncer/http \
+#	 --with github.com/gsmlg-dev/caddy-admin-ui@main \
+#         --with github.com/pberkel/caddy-storage-redis \
+	 
 #	 --with github.com/caddyserver/transform-encoder \
 #	 --with github.com/mholt/caddy-ratelimit \
 #        --with github.com/mholt/caddy-l4 \
