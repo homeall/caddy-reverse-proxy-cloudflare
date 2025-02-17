@@ -80,6 +80,49 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      
+      - name: Slim Docker Image for amd64
+        id: slim-amd64
+        uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
+          DSLIM_IMAGE_BUILD_ARCH: amd64
+        with:
+          target: ${{ github.repository }}:latest
+          tag: slim-amd64
+      
+      - name: Slim Docker Image for arm64
+        id: slim-arm64
+        uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
+          DSLIM_IMAGE_BUILD_ARCH: arm64
+        with:
+          target: ${{ github.repository }}:latest
+          tag: slim-arm64
+
+      - name: Push Intermediate Slim Images
+        run: |
+          docker tag ${{ github.repository }}:slim-amd64 ghcr.io/${{ github.repository }}:slim-amd64
+          docker tag ${{ github.repository }}:slim-arm64 ghcr.io/${{ github.repository }}:slim-arm64
+          docker push ${{ github.repository }}:slim-amd64
+          docker push ${{ github.repository }}:slim-arm64
+          docker push ghcr.io/${{ github.repository }}:slim-amd64
+          docker push ghcr.io/${{ github.repository }}:slim-arm64
+          
+      - name: Create and Push Multi-Arch Manifest for Slim Image
+        uses: Noelware/docker-manifest-action@master
+        with:
+          inputs: ${{ github.repository }}:slim
+          images: ${{ github.repository }}:slim-amd64,${{ github.repository }}:slim-arm64
+          push: true
+
+      - name: Create and Push Multi-Arch Manifest for Slim Image for GHCR
+        uses: Noelware/docker-manifest-action@master
+        with:
+          inputs: ghcr.io/${{ github.repository }}:slim
+          images: ghcr.io/${{ github.repository }}:slim-amd64,ghcr.io/${{ github.repository }}:slim-arm64
+          push: true
           
       - name: Generate artifact attestation
         id: artifacts
@@ -97,6 +140,21 @@ jobs:
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
 
+      - name: Generate SBOM GHCR
+        uses: anchore/sbom-action@v0
+        with:
+          image: ghcr.io/${{ github.repository }}:latest
+          format: 'spdx-json'
+          output-file: 'sbom.spdx.json'
+
+      - name: Attest SBOM GHCR
+        uses: actions/attest-sbom@v2
+        with:
+          subject-name: ghcr.io/${{ github.repository }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          sbom-path: 'sbom.spdx.json'
+          push-to-registry: true
+
       - name: Sign the Published Docker Image
         id: sign-image
         if: github.event_name != 'pull_request'
@@ -107,6 +165,17 @@ jobs:
           for tag in $TAGS; do
             echo "Signing ${tag}@${DIGEST}"
             COSIGN_EXPERIMENTAL=1 cosign sign --yes "${tag}@${DIGEST}"
+          done
+
+      - name: Sign Slim Image
+        id: sign-slim
+        if: github.event_name != 'pull_request'
+        env:
+          COSIGN_EXPERIMENTAL: 1
+          SLIM_TAGS: "${{ github.repository }}:slim ghcr.io/${{ github.repository }}:slim"
+        run: |
+          for tag in $SLIM_TAGS; do
+            cosign sign --yes "${tag}"
           done
 
       - name: Create Github release
