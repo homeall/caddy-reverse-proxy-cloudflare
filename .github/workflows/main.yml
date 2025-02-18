@@ -80,14 +80,16 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          
       - name: Slim Docker Image for amd64
         id: slim-amd64
         uses: kitabisa/docker-slim-action@v1
         env:
           DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
           DSLIM_IMAGE_BUILD_ARCH: amd64
-          DSLIM_HTTP_PROBE_CMD: "curl -fsS http://127.0.0.1:2019/config -o /dev/null || exit 1"
+          DSLIM_HTTP_PROBE: false
         with:
           target: ${{ github.repository }}:latest
           tag: slim-amd64
@@ -98,7 +100,7 @@ jobs:
         env:
           DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
           DSLIM_IMAGE_BUILD_ARCH: arm64
-          DSLIM_HTTP_PROBE_CMD: "curl -fsS http://127.0.0.1:2019/config -o /dev/null || exit 1"
+          DSLIM_HTTP_PROBE: false
         with:
           target: ${{ github.repository }}:latest
           tag: slim-arm64
