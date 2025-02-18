@@ -10,9 +10,6 @@ on:
 jobs:
   buildx:
     runs-on: ubuntu-latest
-    container:
-      image: kitabisa/docker-slim-action@v1
-      options: --volume /var/run/docker.sock:/var/run/docker.sock
     permissions:
       contents: write
       packages: write
