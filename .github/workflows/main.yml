@@ -10,6 +10,9 @@ on:
 jobs:
   buildx:
     runs-on: ubuntu-latest
+    container:
+      image: kitabisa/docker-slim-action@v1
+      options: --volume /var/run/docker.sock:/var/run/docker.sock
     permissions:
       contents: write
       packages: write
@@ -87,7 +90,7 @@ jobs:
         env:
           DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
           DSLIM_IMAGE_BUILD_ARCH: amd64
-          DSLIM_HTTP_PROBE: false
+          DSLIM_HTTP_PROBE_CMD: "curl -fsS http://127.0.0.1:2019/config -o /dev/null || exit 1"
         with:
           target: ${{ github.repository }}:latest
           tag: slim-amd64
@@ -98,7 +101,7 @@ jobs:
         env:
           DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
           DSLIM_IMAGE_BUILD_ARCH: arm64
-          DSLIM_HTTP_PROBE: false
+          DSLIM_HTTP_PROBE_CMD: "curl -fsS http://127.0.0.1:2019/config -o /dev/null || exit 1"
         with:
           target: ${{ github.repository }}:latest
           tag: slim-arm64
