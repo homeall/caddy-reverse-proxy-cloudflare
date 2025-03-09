@@ -193,7 +193,7 @@ I'm TheDocker################################### Expected result from hostname a
 <!-- LICENSE -->
 ## License
 
-:newspaper_roll: Distributed under the MIT license. See [LICENSE](https://raw.githubusercontent.com/homeall/caddy-reverse-proxy-cloudflare/main/LICENSE) for more information.
+:newspaper_roll: Check the [LICENSE](https://raw.githubusercontent.com/homeall/caddy-reverse-proxy-cloudflare/main/LICENSE) for more information.
 
 <!-- CONTACT -->
 ## Contact
