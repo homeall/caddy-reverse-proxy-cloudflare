@@ -11,8 +11,8 @@ FROM caddy:${CADDY_VERSION}-builder AS builder
 
 
 RUN xcaddy build \
-#	 --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
-         --with github.com/lucaslorentz/caddy-docker-proxy/v2@7c489f0e193efaf57aaaed07da9cc713c55054d1 \
+	 --with github.com/lucaslorentz/caddy-docker-proxy/v2@v2.9.2 \
+#         --with github.com/lucaslorentz/caddy-docker-proxy/v2@7c489f0e193efaf57aaaed07da9cc713c55054d1 \
 	 --with github.com/mholt/caddy-dynamicdns \
          --with github.com/sablierapp/sablier/plugins/caddy \
 	 --with github.com/hslatman/caddy-crowdsec-bouncer/http \
