@@ -115,14 +115,14 @@ jobs:
           docker push ghcr.io/${{ github.repository }}:slim-arm64
           
       - name: Create and Push Multi-Arch Manifest for Slim Image
-        uses: Noelware/docker-manifest-action@0.4.3
+        uses: Noelware/docker-manifest-action@1.0.0
         with:
           inputs: ${{ github.repository }}:slim
           images: ${{ github.repository }}:slim-amd64,${{ github.repository }}:slim-arm64
           push: true
 
       - name: Create and Push Multi-Arch Manifest for Slim Image for GHCR
-        uses: Noelware/docker-manifest-action@0.4.3
+        uses: Noelware/docker-manifest-action@1.0.0
         with:
           inputs: ghcr.io/${{ github.repository }}:slim
           images: ghcr.io/${{ github.repository }}:slim-amd64,ghcr.io/${{ github.repository }}:slim-arm64
