@@ -29,16 +29,17 @@ RUN xcaddy build \
 #        --with github.com/fabriziosalmi/caddy-waf=./ \
 #        --with github.com/hadi77ir/caddy-websockify \
 
-
+## Getting certs
 FROM alpine:${ALPINE_VERSION} AS certs
 RUN apk add --no-cache ca-certificates tzdata
 
+## Final image 
 FROM gcr.io/distroless/static-debian12:latest
 
 ENV XDG_CONFIG_HOME=/config \
     XDG_DATA_HOME=/data
 
-EXPOSE 80 443 2019
+EXPOSE 80 443 2019 443/udp
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
