@@ -17,10 +17,7 @@ jobs:
       attestations: write
 
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-
+    
       - name: Install Cosign
         id: install-cosign
         if: github.event_name != 'pull_request'
@@ -68,21 +65,18 @@ jobs:
             latest
             ${{ env.TAG }}
 
-      - name: Build and Push
-        id: build
-        uses: docker/build-push-action@v6
+      - name: Docker Bake Build and Push
+        uses: docker/bake-action@v4
         with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm,linux/arm64
+          files: ./docker-bake.hcl
+          targets: main
+          push: true
           sbom: true
           provenance: mode=max
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          
+          set: |
+            main.tags=${{ steps.meta.outputs.tags }}
+            main.labels=${{ steps.meta.outputs.labels }}
+       
       - name: Slim Docker Image for amd64
         id: slim-amd64
         uses: kitabisa/docker-slim-action@v1
@@ -182,6 +176,76 @@ jobs:
             cosign sign --yes "${tag}"
           done
 
+        # -------- Release Notes --------
+      - name: Generate Release Notes (Docker & Supply Chain Info)
+        if: github.event_name == 'release'
+        run: |
+          TAG="${{ env.TAG }}"
+          REPO="${{ github.repository }}"
+          cat <<EOF > release_notes.txt
+## 🚀 Docker Images for This Release
+
+This release provides multi-architecture Docker images (\`amd64\`, \`arm64\`, and \`arm\`) published to both **Docker Hub** and **GitHub Container Registry (GHCR)**.
+
+---
+
+### 🔹 **Docker Hub**
+
+> **Note:** Docker Hub is the world's most popular public container registry, but it enforces [anonymous pull limits](https://www.docker.com/increase-rate-limits). If you are automating deployments or have many servers, consider using GHCR below to avoid interruptions.
+
+**Repository:** \`${REPO}\`  
+**Tags available:** \`latest\`, \`${TAG}\`
+
+**Pull commands:**
+\`\`\`sh
+docker pull ${REPO}:latest
+docker pull ${REPO}:${TAG}
+\`\`\`
+
+---
+
+### 🔹 **GitHub Container Registry (GHCR)**
+
+> **GHCR** offers higher pull rate limits, strong integration with GitHub, and is recommended for most CI/CD or cloud-native environments.
+
+**Repository:** \`ghcr.io/${REPO}\`  
+**Tags available:** \`latest\`, \`${TAG}\`
+
+**Pull commands:**
+\`\`\`sh
+docker pull ghcr.io/${REPO}:latest
+docker pull ghcr.io/${REPO}:${TAG}
+\`\`\`
+
+---
+
+### 🔒 Supply Chain Security
+
+These images are signed and include:
+
+- **SLSA Provenance:** Attestations to verify how the image was built.
+- **SBOM:** Software Bill of Materials for full component transparency.
+- **Cosign signatures** for tamper-evidence and trust.
+
+**How to verify:**
+\`\`\`sh
+# Verify image signature
+cosign verify ghcr.io/${REPO}:${TAG}
+
+# Verify SLSA provenance
+cosign verify-attestation ghcr.io/${REPO}:${TAG}
+
+# List SBOM attestations
+cosign verify-attestation --type sbom ghcr.io/${REPO}:${TAG}
+\`\`\`
+See [Sigstore Cosign Docs](https://docs.sigstore.dev/cosign/overview/) for full instructions.
+
+---
+
+#### Need help or want to report an issue?  
+Open an issue on [GitHub](https://github.com/${REPO}/issues).
+EOF
+
       - name: Create Github release
         id: github-releasing
         uses: ncipollo/release-action@v1.16.0
@@ -189,3 +253,5 @@ jobs:
           tag: ${{ env.TAG }}
           allowUpdates: true
           makeLatest: true
+          bodyFile: release_notes.txt
+
