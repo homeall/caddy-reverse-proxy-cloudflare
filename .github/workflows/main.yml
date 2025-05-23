@@ -65,6 +65,7 @@ jobs:
             ${{ env.TAG }}
 
       - name: Docker Bake Build and Push
+        id: build
         uses: docker/bake-action@v6.7.0
         with:
           files: |
