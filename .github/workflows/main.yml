@@ -67,7 +67,6 @@ jobs:
       - name: Docker Bake Build and Push
         uses: docker/bake-action@v6.7.0
         with:
-          files: ./docker-bake.hcl
           targets: main
           push: true
           sbom: true
