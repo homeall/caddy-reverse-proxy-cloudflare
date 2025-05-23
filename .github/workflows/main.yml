@@ -180,70 +180,70 @@ jobs:
         run: |
           TAG="${{ env.TAG }}"
           REPO="${{ github.repository }}"
-          cat <<EOF > release_notes.txt
-## 🚀 Docker Images for This Release
-
-This release provides multi-architecture Docker images (\`amd64\`, \`arm64\`, and \`arm\`) published to both **Docker Hub** and **GitHub Container Registry (GHCR)**.
-
----
-
-### 🔹 **Docker Hub**
-
-> **Note:** Docker Hub is the world's most popular public container registry, but it enforces [anonymous pull limits](https://www.docker.com/increase-rate-limits). If you are automating deployments or have many servers, consider using GHCR below to avoid interruptions.
-
-**Repository:** \`${REPO}\`  
-**Tags available:** \`latest\`, \`${TAG}\`
-
-**Pull commands:**
-\`\`\`sh
-docker pull ${REPO}:latest
-docker pull ${REPO}:${TAG}
-\`\`\`
-
----
-
-### 🔹 **GitHub Container Registry (GHCR)**
-
-> **GHCR** offers higher pull rate limits, strong integration with GitHub, and is recommended for most CI/CD or cloud-native environments.
-
-**Repository:** \`ghcr.io/${REPO}\`  
-**Tags available:** \`latest\`, \`${TAG}\`
-
-**Pull commands:**
-\`\`\`sh
-docker pull ghcr.io/${REPO}:latest
-docker pull ghcr.io/${REPO}:${TAG}
-\`\`\`
-
----
-
-### 🔒 Supply Chain Security
-
-These images are signed and include:
-
-- **SLSA Provenance:** Attestations to verify how the image was built.
-- **SBOM:** Software Bill of Materials for full component transparency.
-- **Cosign signatures** for tamper-evidence and trust.
-
-**How to verify:**
-\`\`\`sh
-# Verify image signature
-cosign verify ghcr.io/${REPO}:${TAG}
-
-# Verify SLSA provenance
-cosign verify-attestation ghcr.io/${REPO}:${TAG}
-
-# List SBOM attestations
-cosign verify-attestation --type sbom ghcr.io/${REPO}:${TAG}
-\`\`\`
-See [Sigstore Cosign Docs](https://docs.sigstore.dev/cosign/overview/) for full instructions.
-
----
-
-#### Need help or want to report an issue?  
-Open an issue on [GitHub](https://github.com/${REPO}/issues).
-EOF
-
+          {
+            echo "## 🚀 Docker Images for This Release"
+            echo ""
+            echo "This release provides multi-architecture Docker images (\`amd64\`, \`arm64\`, and \`arm\`) published to both **Docker Hub** and **GitHub Container Registry (GHCR)**."
+            echo ""
+            echo "---"
+            echo ""
+            echo "### 🔹 **Docker Hub**"
+            echo ""
+            echo "> **Note:** Docker Hub is the world's most popular public container registry, but it enforces [anonymous pull limits](https://www.docker.com/increase-rate-limits). If you are automating deployments or have many servers, consider using GHCR below to avoid interruptions."
+            echo ""
+            echo "**Repository:** \`${REPO}\`  "
+            echo "**Tags available:** \`latest\`, \`${TAG}\`"
+            echo ""
+            echo "**Pull commands:**"
+            echo "\`\`\`sh"
+            echo "docker pull ${REPO}:latest"
+            echo "docker pull ${REPO}:${TAG}"
+            echo "\`\`\`"
+            echo ""
+            echo "---"
+            echo ""
+            echo "### 🔹 **GitHub Container Registry (GHCR)**"
+            echo ""
+            echo "> **GHCR** offers higher pull rate limits, strong integration with GitHub, and is recommended for most CI/CD or cloud-native environments."
+            echo ""
+            echo "**Repository:** \`ghcr.io/${REPO}\`  "
+            echo "**Tags available:** \`latest\`, \`${TAG}\`"
+            echo ""
+            echo "**Pull commands:**"
+            echo "\`\`\`sh"
+            echo "docker pull ghcr.io/${REPO}:latest"
+            echo "docker pull ghcr.io/${REPO}:${TAG}"
+            echo "\`\`\`"
+            echo ""
+            echo "---"
+            echo ""
+            echo "### 🔒 Supply Chain Security"
+            echo ""
+            echo "These images are signed and include:"
+            echo ""
+            echo "- **SLSA Provenance:** Attestations to verify how the image was built."
+            echo "- **SBOM:** Software Bill of Materials for full component transparency."
+            echo "- **Cosign signatures** for tamper-evidence and trust."
+            echo ""
+            echo "**How to verify:**"
+            echo "\`\`\`sh"
+            echo "# Verify image signature"
+            echo "cosign verify ghcr.io/${REPO}:${TAG}"
+            echo ""
+            echo "# Verify SLSA provenance"
+            echo "cosign verify-attestation ghcr.io/${REPO}:${TAG}"
+            echo ""
+            echo "# List SBOM attestations"
+            echo "cosign verify-attestation --type sbom ghcr.io/${REPO}:${TAG}"
+            echo "\`\`\`"
+            echo "See [Sigstore Cosign Docs](https://docs.sigstore.dev/cosign/overview/) for full instructions."
+            echo ""
+            echo "---"
+            echo ""
+            echo "#### Need help or want to report an issue?"
+            echo "Open an issue on [GitHub](https://github.com/${REPO}/issues)."
+          } > release_notes.txt
+          
       - name: Create Github release
         id: github-releasing
         uses: ncipollo/release-action@v1.16.0
