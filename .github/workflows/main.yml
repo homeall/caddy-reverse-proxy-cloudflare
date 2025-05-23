@@ -64,23 +64,16 @@ jobs:
             latest
             ${{ env.TAG }}
 
-      - name: Fix tag formatting for Docker Bake
-        id: fix-tags
-        run: |
-          TAGS="$(echo "${{ steps.meta.outputs.tags }}" | tr '\n' ',')"
-          echo "tags=$TAGS" >> $GITHUB_OUTPUT
-          LABELS="$(echo "${{ steps.meta.outputs.labels }}" | tr '\n' ',')"
-          echo "labels=$LABELS" >> $GITHUB_OUTPUT
-
       - name: Docker Bake Build and Push
         uses: docker/bake-action@v6.7.0
         with:
+          files: |
+            ./docker-bake.hcl
+            cwd://${{ steps.meta.outputs.bake-file }}
+          targets: build
           push: true
           sbom: true
           provenance: mode=max
-          set: |
-            main.tags=${{ steps.fix-tags.outputs.tags }}
-            main.labels=${{ steps.fix-tags.outputs.labels }}
 
       - name: Slim Docker Image for amd64
         id: slim-amd64
