@@ -170,27 +170,6 @@ I'm TheDocker################################### Expected result from hostname a
 ```
 ![](./assets/caddy-reverse-proxy.gif)
 
-:hearts: On the status column of the docker, you will notice the `healthy` word. This is telling you that docker is running [healtcheck](https://scoutapm.com/blog/how-to-use-docker-healthcheck) itself in order to make sure it is working properly. 
-
-:arrow_down: Please test yourself using the following command:
-
-```
-❯ docker inspect --format "{{json .State.Health }}" caddy | jq
-{
-  "Status": "healthy",
-  "FailingStreak": 0,
-  "Log": [
-    {
-      "Start": "2021-01-04T11:10:49.2975799Z",
-      "End": "2021-01-04T11:10:49.3836437Z",
-      "ExitCode": 0,
-      "Output": ""
-    }
-  ]
-}
-```
-
-<!-- LICENSE -->
 ## License
 
 :newspaper_roll: Check the [LICENSE](https://raw.githubusercontent.com/homeall/caddy-reverse-proxy-cloudflare/main/LICENSE) for more information.
