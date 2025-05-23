@@ -38,6 +38,8 @@ FROM gcr.io/distroless/static-debian12:latest
 ENV XDG_CONFIG_HOME=/config \
     XDG_DATA_HOME=/data
 
+EXPOSE 80 443 2019
+
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=certs /usr/share/zoneinfo /usr/share/zoneinfo
