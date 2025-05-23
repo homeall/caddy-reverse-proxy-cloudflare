@@ -65,7 +65,7 @@ jobs:
             ${{ env.TAG }}
 
       - name: Docker Bake Build and Push
-        id: build
+        id: bake
         uses: docker/bake-action@v6.7.0
         with:
           files: |
@@ -75,6 +75,12 @@ jobs:
           push: true
           sbom: true
           provenance: mode=max
+          
+      - name: Extract Digest for Attestation
+        id: extract_digest
+        run: |
+          DIGEST=$(echo '${{ steps.bake.outputs.metadata }}' | jq -r '.build["containerimage.digest"]')
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
       - name: Slim Docker Image for amd64
         id: slim-amd64
@@ -134,7 +140,7 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.build.outputs.digest }}
+          subject-digest: ${{ steps.extract_digest.outputs.digest }}
           push-to-registry: true
 
       - name: Generate SBOM GHCR
@@ -148,7 +154,7 @@ jobs:
         uses: actions/attest-sbom@v2
         with:
           subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.build.outputs.digest }}
+          subject-digest: ${{ steps.extract_digest.outputs.digest }}
           sbom-path: 'sbom.spdx.json'
           push-to-registry: true
 
@@ -157,7 +163,7 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build.outputs.digest }}
+          DIGEST: ${{ steps.extract_digest.outputs.digest }}
         run: |
           for tag in $TAGS; do
             echo "Signing ${tag}@${DIGEST}"
