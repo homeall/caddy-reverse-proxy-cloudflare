@@ -132,7 +132,7 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: index.docker.io/${{ github.repository }}
-          subject-digest: ${{ steps.build.outputs.digest }}
+          subject-digest: ${{ steps.extract_digest.outputs.digest }}
           push-to-registry: true
 
       - name: Generate artifact attestation for GHCR
