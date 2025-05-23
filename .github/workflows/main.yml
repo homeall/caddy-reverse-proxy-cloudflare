@@ -182,7 +182,7 @@ jobs:
           done
 
       - name: Generate Release Notes (Docker & Supply Chain Info)
-        if: github.event_name == 'release'
+        if: github.event_name != 'pull_request'
         run: |
           TAG="${{ env.TAG }}"
           REPO="${{ github.repository }}"
