@@ -17,7 +17,6 @@ jobs:
       attestations: write
 
     steps:
-    
       - name: Install Cosign
         id: install-cosign
         if: github.event_name != 'pull_request'
@@ -76,7 +75,7 @@ jobs:
           set: |
             main.tags=${{ steps.meta.outputs.tags }}
             main.labels=${{ steps.meta.outputs.labels }}
-       
+
       - name: Slim Docker Image for amd64
         id: slim-amd64
         uses: kitabisa/docker-slim-action@v1
@@ -87,7 +86,7 @@ jobs:
         with:
           target: ${{ github.repository }}:latest
           tag: slim-amd64
-      
+
       - name: Slim Docker Image for arm64
         id: slim-arm64
         uses: kitabisa/docker-slim-action@v1
@@ -107,7 +106,7 @@ jobs:
           docker push ${{ github.repository }}:slim-arm64
           docker push ghcr.io/${{ github.repository }}:slim-amd64
           docker push ghcr.io/${{ github.repository }}:slim-arm64
-          
+
       - name: Create and Push Multi-Arch Manifest for Slim Image
         uses: Noelware/docker-manifest-action@1.0.0
         with:
@@ -121,7 +120,7 @@ jobs:
           inputs: ghcr.io/${{ github.repository }}:slim
           tags: ghcr.io/${{ github.repository }}:slim-amd64,ghcr.io/${{ github.repository }}:slim-arm64
           push: true
-          
+
       - name: Generate artifact attestation
         id: artifacts
         uses: actions/attest-build-provenance@v2
@@ -129,7 +128,7 @@ jobs:
           subject-name: index.docker.io/${{ github.repository }}
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
-          
+
       - name: Generate artifact attestation for GHCR
         id: artifacts-ghcr
         uses: actions/attest-build-provenance@v2
@@ -177,7 +176,7 @@ jobs:
           done
 
       - name: Generate Release Notes (Docker & Supply Chain Info)
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'release'
         run: |
           TAG="${{ env.TAG }}"
           REPO="${{ github.repository }}"
@@ -253,4 +252,3 @@ EOF
           allowUpdates: true
           makeLatest: true
           bodyFile: release_notes.txt
-
