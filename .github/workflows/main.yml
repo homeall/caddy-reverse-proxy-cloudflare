@@ -187,6 +187,7 @@ jobs:
           TAG="${{ env.TAG }}"
           REPO="${{ github.repository }}"
           DIGEST="${{ steps.extract_digest.outputs.digest }}"
+          RUN_ID=${{ github.run_id }}
           {
             echo "## 🚀 Docker Images for This Release"
             echo ""
@@ -252,8 +253,14 @@ jobs:
             echo ""
             echo "# 2. Verify SLSA provenance (download the provenance file from the GitHub UI and run this command)"
             echo "\`\`\`sh"
-            echo "gh attestation verify --owner ${REPO%%/*} provenance.json"
+            echo "gh attestation verify --owner ${REPO%%/*} <provenance-or-sbom-file.json>"
             echo "\`\`\`"
+            echo "**Links:**"
+            echo ""
+            echo "- [GitHub Actions run #${RUN_ID}](https://github.com/${REPO}/actions/runs/${RUN_ID})"
+            echo "- [Attestations for this build](https://github.com/${REPO}/attestations)"
+            echo ""
+            echo "_Download the 'spdx.json' or provenance artifact from the run above to verify._"
             echo ""
             echo "_Note: 'cosign verify-attestation' is not supported for this release, as attestations are not yet published to the registry. Use the provenance file and 'gh attestation verify' instead._"
             echo ""
