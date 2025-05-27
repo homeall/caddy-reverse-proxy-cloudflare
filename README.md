@@ -121,6 +121,57 @@ services:
 
 ---
 
+### Using a Custom Caddyfile
+
+By default, this image uses `caddy-docker-proxy` to generate Caddy's configuration from Docker labels. However, you can also provide your own complete Caddyfile.
+
+**How Caddy Loads Configuration:**
+Caddy itself loads its primary configuration from `/etc/caddy/Caddyfile` by default.
+
+**Role of `caddy-docker-proxy` and Labels:**
+The `caddy-docker-proxy` service (which is part of this image's entrypoint logic) monitors Docker events and generates a Caddyfile based on the labels you define on your services. By default, `caddy-docker-proxy` writes this generated Caddyfile to `/etc/caddy/Caddyfile`.
+
+**Providing Your Own Caddyfile (Most Common Method):**
+If you want to use your own complete Caddyfile and bypass the label-based generation for the main configuration, mount your custom Caddyfile to `/etc/caddy/Caddyfile`.
+
+Example `docker-compose.yml` snippet:
+```yaml
+services:
+  caddy:
+    # ... other caddy service config ...
+    image: homeall/caddy-reverse-proxy-cloudflare:latest
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"  # Still needed if you import label-generated snippets or for other proxy features
+      - "./caddy-data:/data"                         # For Caddy's state (certificates, etc.)
+      - "./my-custom-caddyfile:/etc/caddy/Caddyfile" # Mount your custom Caddyfile here
+    # environment:
+      # CADDY_DOCKER_CADDYFILE_PATH: '/etc/caddy/Caddyfile' # Default path for label-generated config.
+                                                            # If you mount to /etc/caddy/Caddyfile, this var is implicitly handled.
+    # ...
+```
+When you mount your own file to `/etc/caddy/Caddyfile`, it takes precedence over the file `caddy-docker-proxy` would generate at that same default location. The image's entrypoint is designed to detect a user-provided Caddyfile at this path and will use it directly.
+
+**Advanced: Label-Generated Config to a Different Path (`CADDY_DOCKER_CADDYFILE_PATH`)**
+The `CADDY_DOCKER_CADDYFILE_PATH` environment variable tells `caddy-docker-proxy` where it should write the Caddyfile it generates from Docker labels.
+*   If you **do not set** `CADDY_DOCKER_CADDYFILE_PATH`, it defaults to `/etc/caddy/Caddyfile`.
+*   If you mount your custom Caddyfile to `/etc/caddy/Caddyfile`, `caddy-docker-proxy` will still attempt to write to this path, but your mounted file will be what Caddy uses.
+*   **Hybrid Setup (Advanced):** If you want Caddy to load your custom Caddyfile from `/etc/caddy/Caddyfile` but *also* want `caddy-docker-proxy` to generate a separate Caddyfile from labels (e.g., for specific dynamic backends), you can set `CADDY_DOCKER_CADDYFILE_PATH` to a *different* location, for example:
+    ```yaml
+    environment:
+      CADDY_DOCKER_CADDYFILE_PATH: '/caddy-generated/CaddyfileFromLabels'
+    volumes:
+      - "./my-custom-caddyfile:/etc/caddy/Caddyfile"
+      - "./caddy-generated:/caddy-generated" # So you can inspect or use the generated file
+    ```
+    In this scenario, your custom `/etc/caddy/Caddyfile` would be loaded by Caddy. You could then use the `import /caddy-generated/CaddyfileFromLabels` directive within your custom Caddyfile to include the label-generated configurations. This is useful if you want a base static configuration combined with dynamic configurations from other Docker containers.
+
+**Important Considerations:**
+*   If you provide a custom Caddyfile to `/etc/caddy/Caddyfile`, you are fully responsible for its content, including global options, TLS settings, and defining your sites.
+*   Plugins like `caddy-storage-redis` require their configuration to be in the global options block of the Caddyfile that Caddy loads (i.e., your custom `/etc/caddy/Caddyfile`).
+*   The `caddy.email` and `caddy.acme_dns` labels on the Caddy service itself are typically used by `caddy-docker-proxy` to generate global options. If you provide a full custom Caddyfile, ensure these global options (like `email` for ACME and `acme_dns` for DNS challenges) are correctly defined in your Caddyfile's global block `{...}`.
+
+---
+
 ### <img src="https://raw.githubusercontent.com/LXFN/caddy-admin-ui/main/static/img/logo_64.png" width="20" height="20"> Caddy Admin UI (Experimental)
 
 The `caddy-admin-ui` plugin provides a web interface for managing Caddy. 
@@ -158,9 +209,9 @@ Then, configure a Caddy service to reverse proxy to the admin UI:
 
 The `caddy-storage-redis` plugin allows Caddy to use Redis for storing certificates and other state. This is particularly useful in a distributed setup where multiple Caddy instances need to share this information.
 
-Configuration for `caddy-storage-redis` is done within the Caddyfile's global options, specifically in the `storage` block. Environment variables are not used for this plugin.
+Configuration for `caddy-storage-redis` is done within the global options of your Caddyfile (typically `/etc/caddy/Caddyfile`), specifically in the `storage` block. Environment variables are not directly used for configuring the Redis storage parameters themselves.
 
-Here is an example Caddyfile configuration for Redis storage:
+Here is an example Caddyfile snippet showing Redis storage configuration:
 
 ```caddyfile
 {
@@ -205,8 +256,10 @@ services:
     # command: redis-server --requirepass your-strong-password
 ```
 If you set a password for Redis, ensure you configure it in your Caddyfile's `storage redis` block.
-To use the Caddyfile method for configuration, you would typically mount your Caddyfile into the Caddy container. For example, in your `docker-compose.yml`:
 
+To use a custom Caddyfile (e.g., for configuring Redis storage or other specific settings not covered by labels), mount it to `/etc/caddy/Caddyfile`. See the "Using a Custom Caddyfile" section above for more details.
+
+Example `docker-compose.yml` for Caddy service using a custom Caddyfile for Redis storage:
 ```yaml
 services:
   caddy:
@@ -215,23 +268,24 @@ services:
     restart: unless-stopped
     environment:
       TZ: 'Europe/London'
-      # CADDY_DOCKER_CADDYFILE_PATH: '/path/to/your/Caddyfile' # If using a Caddyfile instead of labels for main config
+      # CADDY_DOCKER_CADDYFILE_PATH: '/etc/caddy/Caddyfile' # Default path for label-generated config.
+                                                            # When mounting to /etc/caddy/Caddyfile, this is implicitly handled.
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./caddy-data:/data"
-      - "./my-caddyfile:/etc/caddy/Caddyfile" # Mount your Caddyfile here
+      - "/var/run/docker.sock:/var/run/docker.sock"  # For caddy-docker-proxy to read service labels
+      - "./caddy-data:/data"                         # For Caddy's state (certificates, etc.)
+      - "./my-caddyfile-with-redis-config:/etc/caddy/Caddyfile" # Mount your Caddyfile here
     ports:
       - "80:80"
       - "443:443"
       - "443:443/udp"
-    # labels for caddy-docker-proxy are still useful for other services, 
-    # but storage is configured in the Caddyfile.
+    # Docker labels for caddy-docker-proxy (e.g., for other services) can still be used
+    # in conjunction with a custom Caddyfile if your custom Caddyfile imports label-generated snippets.
+    # However, global options like 'storage' must be in the primary /etc/caddy/Caddyfile.
     # labels:
-    #   caddy.email: email@example.com
-    #   caddy.acme_dns: "cloudflare $API_TOKEN" 
+    #   caddy.email: email@example.com 
+    #   caddy.acme_dns: "cloudflare $API_TOKEN"
 ```
-Ensure that `CADDY_DOCKER_CADDYFILE_PATH` environment variable is **not set** or is pointing to the Caddyfile you are providing if you want Caddy Docker Proxy to use your Caddyfile for the main configuration. If `CADDY_DOCKER_CADDYFILE_PATH` is set, Caddy Docker Proxy will generate a Caddyfile and your storage configuration might be overwritten unless it's also managed by labels (which is not the case for `caddy-storage-redis`).
-For `caddy-storage-redis` specifically, the configuration must be in the global options of your main Caddyfile as shown above.
+The `caddy-storage-redis` configuration (like the `storage redis { ... }` block) must be in the global options of the Caddyfile that Caddy loads (i.e., `/etc/caddy/Caddyfile` if you've mounted your own).
 
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
