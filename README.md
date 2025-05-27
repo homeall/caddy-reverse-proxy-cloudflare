@@ -119,8 +119,6 @@ services:
 ```
 > Please get your scoped API-Token from  **[here](https://github.com/libdns/cloudflare#authenticating)**.
 
-> Please get your scoped API-Token from  **[here](https://github.com/libdns/cloudflare#authenticating)**.
-
 ---
 
 ### <img src="https://raw.githubusercontent.com/LXFN/caddy-admin-ui/main/static/img/logo_64.png" width="20" height="20"> Caddy Admin UI (Experimental)
@@ -160,39 +158,80 @@ Then, configure a Caddy service to reverse proxy to the admin UI:
 
 The `caddy-storage-redis` plugin allows Caddy to use Redis for storing certificates and other state. This is particularly useful in a distributed setup where multiple Caddy instances need to share this information.
 
-To configure Redis storage, set the following environment variables for your Caddy service:
+Configuration for `caddy-storage-redis` is done within the Caddyfile's global options, specifically in the `storage` block. Environment variables are not used for this plugin.
+
+Here is an example Caddyfile configuration for Redis storage:
+
+```caddyfile
+{
+    # All values are optional, below are the defaults
+    storage redis {
+        host           127.0.0.1
+        port           6379
+        address        127.0.0.1:6379 // derived from host and port values if not explicitly set
+        username       ""
+        password       ""
+        db             0
+        timeout        5
+        key_prefix     "caddy"
+        encryption_key ""    // default no encryption; enable by specifying a secret key containing 32 characters (longer keys will be truncated)
+        compression    false // default no compression; if set to true, stored values are compressed using "compress/flate"
+        tls_enabled    false
+        tls_insecure   true
+    }
+}
+
+:443 {
+    # Your site configuration
+    # e.g., reverse_proxy / your-app:port
+}
+```
+
+:information_source: **Note:** The example above shows the default values for the Redis storage module. If your Redis instance is running on a different server or requires authentication, you will need to update the `host`, `port`, `address` (if not using default host/port), `username`, `password`, and `tls_enabled` fields accordingly.
+
+You'll also need a Redis instance running and accessible by Caddy. Here's a simple example of adding a Redis service to your `docker-compose.yml` if you don't have one already:
 
 ```yaml
 services:
-  caddy:
-    # ... other caddy service config ...
-    image: homeall/caddy-reverse-proxy-cloudflare:latest
-    environment:
-      # ... other environment variables like TZ, CADDY_DOCKER_CADDYFILE_PATH ...
-      CADDY_STORAGE_REDIS_HOST: "your-redis-host"       # e.g., redis:6379 or 192.168.1.10:6379
-      CADDY_STORAGE_REDIS_PASSWORD: "your-redis-password" # Optional
-      CADDY_STORAGE_REDIS_DB: "0"                         # Optional, default is 0
-      # CADDY_STORAGE_REDIS_KEY_PREFIX: "caddy_storage"   # Optional, default is "caddy"
-      # CADDY_STORAGE_REDIS_TLS_ENABLED: "false"          # Optional, default is false
-      # CADDY_STORAGE_REDIS_TLS_INSECURE: "false"         # Optional, default is false
-    # ...
-```
+  # ... your caddy service ...
 
-You'll also need a Redis instance running and accessible by Caddy. Here's a simple example of adding a Redis service to your `docker-compose.yml`:
-
-```yaml
   redis:
     image: redis:alpine
     container_name: redis
     restart: unless-stopped
     volumes:
-      - "./redis-data:/data"
-    # command: redis-server --requirepass your-redis-password # Uncomment and set a password for production
+      - "./redis-data:/data" # Persist Redis data
+    # For production, set a password:
+    # command: redis-server --requirepass your-strong-password
 ```
+If you set a password for Redis, ensure you configure it in your Caddyfile's `storage redis` block.
+To use the Caddyfile method for configuration, you would typically mount your Caddyfile into the Caddy container. For example, in your `docker-compose.yml`:
 
-And then update your Caddy service environment variables to point to this Redis service:
-`CADDY_STORAGE_REDIS_HOST: "redis:6379"`
-`CADDY_STORAGE_REDIS_PASSWORD: "your-redis-password"` (if you set one)
+```yaml
+services:
+  caddy:
+    container_name: caddy
+    image: homeall/caddy-reverse-proxy-cloudflare:latest
+    restart: unless-stopped
+    environment:
+      TZ: 'Europe/London'
+      # CADDY_DOCKER_CADDYFILE_PATH: '/path/to/your/Caddyfile' # If using a Caddyfile instead of labels for main config
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./caddy-data:/data"
+      - "./my-caddyfile:/etc/caddy/Caddyfile" # Mount your Caddyfile here
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    # labels for caddy-docker-proxy are still useful for other services, 
+    # but storage is configured in the Caddyfile.
+    # labels:
+    #   caddy.email: email@example.com
+    #   caddy.acme_dns: "cloudflare $API_TOKEN" 
+```
+Ensure that `CADDY_DOCKER_CADDYFILE_PATH` environment variable is **not set** or is pointing to the Caddyfile you are providing if you want Caddy Docker Proxy to use your Caddyfile for the main configuration. If `CADDY_DOCKER_CADDYFILE_PATH` is set, Caddy Docker Proxy will generate a Caddyfile and your storage configuration might be overwritten unless it's also managed by labels (which is not the case for `caddy-storage-redis`).
+For `caddy-storage-redis` specifically, the configuration must be in the global options of your main Caddyfile as shown above.
 
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
