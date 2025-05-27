@@ -56,7 +56,7 @@ It also supports dynamic IP address updates via [Caddy DynamicDNS](https://githu
 <!-- GETTING STARTED -->
 ## Getting Started
 
-:beginner: This image supports `linux/amd64`, `linux/arm64`, and `linux/arm/v7` (arm32) architectures, making it suitable for standard Linux servers and [Raspberry Pi](https://www.raspberrypi.org) devices.
+:beginner: This image supports `linux/amd64`, `linux/arm`, and `linux/arm64` architectures, making it suitable for standard Linux servers and various ARM-based devices, including Raspberry Pi.
 
 ### Prerequisites
 
