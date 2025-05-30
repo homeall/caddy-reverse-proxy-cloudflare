@@ -81,7 +81,6 @@ You will tell :tm: [Caddy](https://caddyserver.com/) where it has to route traff
 :arrow_down: A simple [docker-compose.yml](https://docs.docker.com/compose/):
 
 ```
-version: "3.3"
 
 services:
   caddy:
