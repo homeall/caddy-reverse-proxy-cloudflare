@@ -105,7 +105,7 @@ services:
       # caddy.admin.origins: "your.admin.domain.com" # Or use specific IP/host if not exposing publicly
 
   whoami0:
-    container_name: whoami # Corrected typo from whoiam to whoami
+    container_name: whoam
     image: traefik/whoami # Using traefik/whoami as jwilder/whoami is a bit old
     hostname: TheDocker #----->>Expected result using curl
     restart: unless-stopped
