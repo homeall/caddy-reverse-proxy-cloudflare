@@ -52,6 +52,12 @@ It also supports dynamic IP address updates via [Caddy DynamicDNS](https://githu
 
 :interrobang: Note: A **scoped API token** is required for Cloudflare DNS. Details can be found [here](https://github.com/libdns/cloudflare#authenticating).
 
+## ☕️ Support HomeAll
+
+Enjoying my home lab and IT projects?  
+[Buy me a coffee](https://buymeacoffee.com/homeall) to keep the ideas coming!
+
+[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=homeall&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff)](https://buymeacoffee.com/homeall)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -307,6 +313,8 @@ Make sure to replace `your.example.com` with the domain you configured in the `w
 ## Contact
 
 :red_circle: Please free to open a ticket on Github.
+
+Or [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-yellow?logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/homeall) 😊
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
