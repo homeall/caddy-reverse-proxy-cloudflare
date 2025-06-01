@@ -185,21 +185,6 @@ To enable it, you can add the following global labels to your Caddy service in `
       # caddy.admin.instance_id: "my-caddy-instance"          # Optional: Custom instance ID
 ```
 
-Then, configure a Caddy service to reverse proxy to the admin UI:
-
-```yaml
-  caddy-admin-ui:
-    image: homeall/caddy-reverse-proxy-cloudflare:latest # Use the same image
-    # This service doesn't run Caddy itself, but its labels are read by the main Caddy instance
-    # to set up the reverse proxy for the admin UI.
-    # No need to define ports, volumes, or environment for this "proxy definition" service.
-    labels:
-      caddy: admin.your.example.com  # Domain for accessing the Admin UI
-      caddy.reverse_proxy: "{{upstreams host=caddy port=2019}}" # Proxy to the main Caddy admin API
-      # Ensure you have appropriate TLS settings, e.g., via global acme_dns or specific labels here
-      # caddy.tls.dns: "cloudflare $API_TOKEN" 
-```
-
 :warning: **Security Note**: Exposing the Caddy admin interface publicly can be a security risk. Ensure you understand the implications and secure it appropriately (e.g., using strong authentication, IP whitelisting, or running it on a private network). The plugin is also experimental.
 
 ---
