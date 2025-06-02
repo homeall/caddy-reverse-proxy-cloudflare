@@ -19,8 +19,7 @@ jobs:
       - name: Get latest Alpine version
         id: alpine
         run: |
-          curl -s https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86_64/latest-releases.yaml > alpine.yaml
-          ALPINE_LATEST=$(grep 'version:' alpine.yaml | head -1 | awk '{print $2}')
+          ALPINE_LATEST=$(curl -s https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86_64/latest-releases.yaml | grep 'version:' | head -1 | awk '{print $2}')
           echo "Latest Alpine version: $ALPINE_LATEST"
           echo "alpine_version=$ALPINE_LATEST" >> $GITHUB_OUTPUT
 
