@@ -10,5 +10,5 @@
   "automergeType": "pr",
   "platformAutomerge": true,
   "labels": ["dependencies", "automerge"],
-  "schedule": ["0 */2 * * *"]
+  "schedule": ["0 */6 * * *"]
 }
