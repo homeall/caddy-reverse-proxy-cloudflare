@@ -82,51 +82,6 @@ jobs:
           DIGEST=$(echo '${{ steps.bake.outputs.metadata }}' | jq -r '.build["containerimage.digest"]')
           echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
-      - name: Slim Docker Image for amd64
-        id: slim-amd64
-        uses: kitabisa/docker-slim-action@v1
-        env:
-          DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
-          DSLIM_IMAGE_BUILD_ARCH: amd64
-          DSLIM_HTTP_PROBE: false
-        with:
-          target: ${{ github.repository }}:latest
-          tag: slim-amd64
-
-      - name: Slim Docker Image for arm64
-        id: slim-arm64
-        uses: kitabisa/docker-slim-action@v1
-        env:
-          DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
-          DSLIM_IMAGE_BUILD_ARCH: arm64
-          DSLIM_HTTP_PROBE: false
-        with:
-          target: ${{ github.repository }}:latest
-          tag: slim-arm64
-
-      - name: Push Intermediate Slim Images
-        run: |
-          docker tag ${{ github.repository }}:slim-amd64 ghcr.io/${{ github.repository }}:slim-amd64
-          docker tag ${{ github.repository }}:slim-arm64 ghcr.io/${{ github.repository }}:slim-arm64
-          docker push ${{ github.repository }}:slim-amd64
-          docker push ${{ github.repository }}:slim-arm64
-          docker push ghcr.io/${{ github.repository }}:slim-amd64
-          docker push ghcr.io/${{ github.repository }}:slim-arm64
-
-      - name: Create and Push Multi-Arch Manifest for Slim Image
-        uses: Noelware/docker-manifest-action@1.0.0
-        with:
-          inputs: ${{ github.repository }}:slim
-          tags: ${{ github.repository }}:slim-amd64,${{ github.repository }}:slim-arm64
-          push: true
-
-      - name: Create and Push Multi-Arch Manifest for Slim Image for GHCR
-        uses: Noelware/docker-manifest-action@1.0.0
-        with:
-          inputs: ghcr.io/${{ github.repository }}:slim
-          tags: ghcr.io/${{ github.repository }}:slim-amd64,ghcr.io/${{ github.repository }}:slim-arm64
-          push: true
-
       - name: Generate artifact attestation
         id: artifacts
         uses: actions/attest-build-provenance@v2
@@ -168,17 +123,6 @@ jobs:
           for tag in $TAGS; do
             echo "Signing ${tag}@${DIGEST}"
             COSIGN_EXPERIMENTAL=1 cosign sign --yes "${tag}@${DIGEST}"
-          done
-
-      - name: Sign Slim Image
-        id: sign-slim
-        if: github.event_name != 'pull_request'
-        env:
-          COSIGN_EXPERIMENTAL: 1
-          SLIM_TAGS: "${{ github.repository }}:slim ghcr.io/${{ github.repository }}:slim"
-        run: |
-          for tag in $SLIM_TAGS; do
-            cosign sign --yes "${tag}"
           done
 
       - name: Generate Release Notes (Docker & Supply Chain Info)
