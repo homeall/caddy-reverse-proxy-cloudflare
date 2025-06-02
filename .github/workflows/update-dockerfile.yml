@@ -1,0 +1,111 @@
+name: Update Alpine and Caddy Version
+
+on:
+  schedule:
+    - cron: '0 4 1 * *'    # Run monthly, at 4:00 UTC on the first day of the month
+  workflow_dispatch:
+  
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  check-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Get latest Alpine version
+        id: alpine
+        run: |
+          curl -s https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86_64/latest-releases.yaml > alpine.yaml
+          ALPINE_LATEST=$(grep 'version:' alpine.yaml | head -1 | awk '{print $2}')
+          echo "Latest Alpine version: $ALPINE_LATEST"
+          echo "alpine_version=$ALPINE_LATEST" >> $GITHUB_OUTPUT
+
+      - name: Get latest Caddy version
+        id: caddy
+        run: |
+          LATEST_CADDY=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r .tag_name | sed 's/^v//')
+          echo "Latest Caddy version: $LATEST_CADDY"
+          echo "caddy_version=$LATEST_CADDY" >> $GITHUB_OUTPUT
+
+      - name: Print current Dockerfile versions
+        run: |
+          echo "Current Dockerfile versions:"
+          grep 'ARG ALPINE_VERSION' Dockerfile || true
+          grep 'ARG CADDY_VERSION' Dockerfile || true
+
+      - name: Update Dockerfile if versions changed
+        id: update
+        run: |
+          set -e
+          file="Dockerfile"
+          alpine_version="${{ steps.alpine.outputs.alpine_version }}"
+          caddy_version="${{ steps.caddy.outputs.caddy_version }}"
+          changed=0
+          msg=""
+          body=""
+
+          if ! grep -q "ARG ALPINE_VERSION=${alpine_version}" $file; then
+            sed -i "s/ARG ALPINE_VERSION=.*/ARG ALPINE_VERSION=${alpine_version}/" $file
+            changed=1
+            msg="${msg}Alpine to ${alpine_version}\n"
+            body="${body}- **Alpine** updated to \`${alpine_version}\`\n"
+          fi
+          if ! grep -q "ARG CADDY_VERSION=${caddy_version}" $file; then
+            sed -i "s/ARG CADDY_VERSION=.*/ARG CADDY_VERSION=${caddy_version}/" $file
+            changed=1
+            msg="${msg}Caddy to ${caddy_version}\n"
+            body="${body}- **Caddy** updated to \`${caddy_version}\`\n"
+          fi
+
+          echo "changed=$changed" >> $GITHUB_OUTPUT
+          echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$msg" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "body_msg<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$body" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Print Dockerfile diff
+        if: steps.update.outputs.changed == '1'
+        run: |
+          echo "Dockerfile changes:"
+          git diff Dockerfile || true
+
+      - name: Commit and push changes
+        if: steps.update.outputs.changed == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "update/alpine-caddy-${{ github.run_id }}"
+          git add Dockerfile
+          git commit --signoff -m "chore: update ${{ steps.update.outputs.commit_msg }}"
+          git push origin "update/alpine-caddy-${{ github.run_id }}"
+
+      - name: Create Pull Request
+        if: steps.update.outputs.changed == '1'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: "update/alpine-caddy-${{ github.run_id }}"
+          title: "chore: update ${{ steps.update.outputs.commit_msg }}"
+          commit-message: "chore: update ${{ steps.update.outputs.commit_msg }}"
+          body: |
+            This PR updates:
+            ${{ steps.update.outputs.body_msg }}
+
+            All changes:
+            ```
+            $(git diff HEAD^ HEAD)
+            ```
+          labels: |
+            dependencies
+            automated pr
+
+      - name: Auto-approve PR
+        if: steps.update.outputs.changed == '1'
+        uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
