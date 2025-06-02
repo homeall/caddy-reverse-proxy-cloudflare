@@ -3,7 +3,7 @@
 
 
 # Caddy reverse proxy with cloudflare plugin
-
+![Caddy Ultimate Reverse Proxy Banner](./assets/banner.png)
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
