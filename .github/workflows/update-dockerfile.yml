@@ -95,9 +95,3 @@ jobs:
             dependencies
             automated pr
           signoff: true
-
-      - name: Auto-approve PR
-        if: steps.update.outputs.changed == '1'
-        uses: hmarr/auto-approve-action@v4
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
