@@ -10,6 +10,10 @@
   "automergeType": "pr",
   "platformAutomerge": true,
   "labels": ["dependencies", "automerge"],
+  "vulnerabilityAlerts": {
+     "enabled": true
+  },
+  "osvVulnerabilityAlerts": true,
   "schedule": [
     "* */6 * * *"
   ]
