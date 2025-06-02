@@ -90,6 +90,8 @@ jobs:
             dependencies
             automated pr
           signoff: true
+          sign-commits: true
+          delete-branch: true
 
       - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created'
