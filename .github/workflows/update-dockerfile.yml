@@ -80,6 +80,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Always start from the default branch
+          git fetch origin main
+          git checkout main
+          git pull
           git checkout -b "update/alpine-caddy-${{ github.run_id }}"
           git add Dockerfile
           git commit --signoff -m "chore: update ${{ steps.update.outputs.commit_msg }}"
