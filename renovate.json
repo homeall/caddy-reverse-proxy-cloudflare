@@ -8,5 +8,6 @@
   ],
   "prCreation": "immediate",
   "automergeType": "pr",
-  "platformAutomerge": true
+  "platformAutomerge": true,
+  "labels": ["dependencies", "automerge"]
 }
