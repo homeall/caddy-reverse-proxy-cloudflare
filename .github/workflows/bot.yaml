@@ -1,8 +1,7 @@
-name: Auto-approve and merge bot PRs
+name: Auto-approve and merge Dependabot PRs
 
 on:
   pull_request_target:
-  pull_request:
 
 permissions:
   pull-requests: write
@@ -10,15 +9,18 @@ permissions:
 
 jobs:
   approve-and-merge:
-    if: github.actor == 'github-actions[bot]' || github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: hmarr/auto-approve-action@v4
+        name: Auto-approve PR
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Auto-merge PR
-        run: gh pr merge --auto --merge "$PR_URL"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
+      - name: Enable auto-merge
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: merge
+      
