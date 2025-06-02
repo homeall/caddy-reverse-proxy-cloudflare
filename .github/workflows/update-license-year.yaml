@@ -1,0 +1,63 @@
+name: Update LICENSE Year
+
+on:
+  schedule:
+    - cron: '0 0 1 1 *' # At 00:00 UTC, January 1st
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-license-year:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update LICENSE Year
+        id: update_license
+        run: |
+          curr_year=$(date +'%Y')
+          old_year=$(grep -oP '(?<=Copyright \(c\) )\d{4}' LICENSE | head -n1)
+          if [ -z "$old_year" ]; then
+            echo "Could not find year in LICENSE file!"
+            exit 1
+          fi
+          if [ "$curr_year" != "$old_year" ]; then
+            echo "Updating LICENSE year $old_year -> $curr_year"
+            sed -i "s/Copyright (c) $old_year/Copyright (c) $curr_year/" LICENSE
+            echo "changed=1" >> $GITHUB_OUTPUT
+            echo "year=$curr_year" >> $GITHUB_OUTPUT
+            echo "msg=Update LICENSE year to $curr_year" >> $GITHUB_OUTPUT
+          else
+            echo "No update needed."
+            echo "changed=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and Create Pull Request
+        if: steps.update_license.outputs.changed == '1'
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: "update/license-year-${{ steps.update_license.outputs.year }}"
+          title: "${{ steps.update_license.outputs.msg }}"
+          commit-message: "${{ steps.update_license.outputs.msg }}"
+          body: |
+            This PR updates the LICENSE file copyright year to **${{ steps.update_license.outputs.year }}**.
+          labels: |
+            automated pr
+            license
+          signoff: true
+          sign-commits: true
+          delete-branch: true
+
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
