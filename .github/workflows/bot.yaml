@@ -1,4 +1,4 @@
-name: Auto-approve and merge Dependabot PRs
+name: Auto-approve and merge PRs
 
 on:
   pull_request_target:
@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   approve-and-merge:
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'github-actions[bot]' || github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: hmarr/auto-approve-action@v4
