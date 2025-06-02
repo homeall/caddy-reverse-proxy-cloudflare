@@ -9,5 +9,6 @@
   "prCreation": "immediate",
   "automergeType": "pr",
   "platformAutomerge": true,
-  "labels": ["dependencies", "automerge"]
+  "labels": ["dependencies", "automerge"],
+  "schedule": ["every 6 hours"]
 }
