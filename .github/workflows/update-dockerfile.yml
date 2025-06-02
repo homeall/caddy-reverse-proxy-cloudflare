@@ -4,10 +4,10 @@ on:
   schedule:
     - cron: '0 4 1 * *'    # Run monthly, at 4:00 UTC on the first day of the month
   workflow_dispatch:
-  
+
 permissions:
-  pull-requests: write
-  contents: write
+  contents: write           # Required for pushing and creating PRs
+  pull-requests: write      # Required for creating/updating PRs
 
 jobs:
   check-update:
@@ -75,23 +75,10 @@ jobs:
           echo "Dockerfile changes:"
           git diff Dockerfile || true
 
-      - name: Commit and push changes
-        if: steps.update.outputs.changed == '1'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Always start from the default branch
-          git fetch origin main
-          git checkout main
-          git pull
-          git checkout -b "update/alpine-caddy-${{ github.run_id }}"
-          git add Dockerfile
-          git commit --signoff -m "chore: update ${{ steps.update.outputs.commit_msg }}"
-          git push origin "update/alpine-caddy-${{ github.run_id }}"
-
       - name: Create Pull Request
         if: steps.update.outputs.changed == '1'
-        uses: peter-evans/create-pull-request@v6
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
         with:
           branch: "update/alpine-caddy-${{ github.run_id }}"
           title: "chore: update ${{ steps.update.outputs.commit_msg }}"
@@ -107,6 +94,7 @@ jobs:
           labels: |
             dependencies
             automated pr
+          signoff: true
 
       - name: Auto-approve PR
         if: steps.update.outputs.changed == '1'
