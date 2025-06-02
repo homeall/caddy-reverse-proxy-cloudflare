@@ -86,11 +86,6 @@ jobs:
           body: |
             This PR updates:
             ${{ steps.update.outputs.body_msg }}
-
-            All changes:
-            ```
-            $(git diff HEAD^ HEAD)
-            ```
           labels: |
             dependencies
             automated pr
