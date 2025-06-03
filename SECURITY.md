@@ -42,4 +42,4 @@ We will not take legal action against you or administrative action against your 
 
 ## License
 
-This Security Policy is licensed under the Eclipse Public License 2.0 (EPL-2.0).
+This Security Policy is licensed under the MIT.
