@@ -2,7 +2,7 @@ name: Update LICENSE Year
 
 on:
   schedule:
-    - cron: '0 0 1 1 *' # At 00:00 UTC, January 1st
+    - cron: '1 0 1 1 *' # At 00:00 UTC, January 1st
   workflow_dispatch:
 
 permissions:
@@ -44,7 +44,7 @@ jobs:
         with:
           branch: "update/license-year-${{ steps.update_license.outputs.year }}"
           title: "${{ steps.update_license.outputs.msg }}"
-          commit-message: "${{ steps.update_license.outputs.msg }}"
+          commit-message: "chore(license): update copyright year to ${{ steps.update_license.outputs.year }}"
           body: |
             This PR updates the LICENSE file copyright year to **${{ steps.update_license.outputs.year }}**.
           labels: |
