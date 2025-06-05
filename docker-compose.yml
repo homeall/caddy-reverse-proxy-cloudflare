@@ -1,5 +1,3 @@
-version: "3.4"
-
 services:
   caddy:
     container_name: caddy
@@ -8,22 +6,28 @@ services:
     environment:
       TZ: "Europe/London"
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock" #### needs socket to read events
-      - "./caddy-data:/data" #### needs volume to back up certificates
+      - "/var/run/docker.sock:/var/run/docker.sock"      # needs socket to read events
+      - "./caddy-data:/data"                             # persist certificates via XDG_DATA_HOME
     ports:
       - "80:80"
       - "443:443"
-    labels: # Global options
-      caddy.email: email@example.com #### needs for acme CERT registration account
+      - "443:443/udp"                                    # Enable HTTP/3
+    labels:                                              # Global options
+      caddy.email: email@example.com                     # needs for acme CERT registration account
+      caddy.acme_dns: "cloudflare $API_TOKEN"            # When set here, you don't need to set it for each service individually
+      # Optional: Enable Admin UI (experimental) - see README for details
+      # caddy.admin: "0.0.0.0:2019"
+      # caddy.admin.origins: "your.admin.domain.com" # Or use specific IP/host if not exposing publicly
 
   whoami0:
-    container_name: whoiam
-    image: jwilder/whoami:latest
-    hostname: TheDocker ############################----->>Expected result using curl
+    container_name: whoam
+    image: traefik/whoami
+    hostname: TheDocker #----->>Expected result using curl
     restart: unless-stopped
     labels:
-      caddy: your.example.com #### needs for caddy to redirect traffic
-      caddy.reverse_proxy: "{{upstreams 8000}}" #### needs to tell caddy which port number should send traffic
-      caddy.tls.protocols: "tls1.3" #### This is optional. Default it is tls1.2
-      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # Needs only for testing purpose. Remove this line after you finished your tests.
-      caddy.tls.dns: "cloudflare $API-TOKEN" #### You will have to replace here $API-TOKEN with your real scoped API token from Cloudflare.
+      caddy: your.example.com                            # Caddy will route traffic for this domain
+      # caddy.tls.ca: "https://acme.zerossl.com/v2/DV90" # Uncomment if you prefer ZeroSSL. Default is Let's Encrypt.
+      caddy.reverse_proxy: "{{upstreams 80}}"            # Forward traffic to port 80 of this container (traefik/whoami listens on 80)
+      caddy.tls.protocols: "tls1.3"                      # Optional: Enforce TLS 1.3. Default is tls1.2 and tls1.3.
+      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # For testing. Remove for production.
+      caddy.tls.dns: "cloudflare $API_TOKEN"             # (Optional when using global setting) Replace $API_TOKEN with your Cloudflare scoped API token.
