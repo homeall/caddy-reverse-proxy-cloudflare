@@ -237,7 +237,7 @@ The `CADDY_DOCKER_CADDYFILE_PATH` environment variable tells `caddy-docker-proxy
 
 ---
 
-### <img src="https://raw.githubusercontent.com/LXFN/caddy-admin-ui/main/static/img/logo_64.png" width="20" height="20"> Caddy Admin UI (Experimental)
+### :construction: Caddy Admin UI (Experimental)
 
 The `caddy-admin-ui` plugin provides a web interface for managing Caddy. 
 To enable it, you can add the following global labels to your Caddy service in `docker-compose.yml`:
