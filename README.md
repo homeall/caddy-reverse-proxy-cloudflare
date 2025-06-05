@@ -1,5 +1,12 @@
-[![cloudflared](https://github.com/homeall/caddy-reverse-proxy-cloudflare/workflows/CI/badge.svg)](https://github.com/homeall/caddy-reverse-proxy-cloudflare/actions) [![pull](https://img.shields.io/docker/pulls/homeall/caddy-reverse-proxy-cloudflare)](https://img.shields.io/docker/pulls/homeall/caddy-reverse-proxy-cloudflare) [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](#) [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#) [![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white)](#) [![Docker Image Size](https://img.shields.io/docker/image-size/homeall/caddy-reverse-proxy-cloudflare)](https://hub.docker.com/r/homeall/caddy-reverse-proxy-cloudflare) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhomeall%2Fcaddy-reverse-proxy-cloudflare.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhomeall%2Fcaddy-reverse-proxy-cloudflare?ref=badge_shield&issueType=license)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://ionut.vip)
+[![Cloudflared](https://github.com/homeall/caddy-reverse-proxy-cloudflare/workflows/CI/badge.svg)](https://github.com/homeall/caddy-reverse-proxy-cloudflare/actions)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#) 
+[![Docker pulls](https://img.shields.io/docker/pulls/homeall/caddy-reverse-proxy-cloudflare)](https://img.shields.io/docker/pulls/homeall/caddy-reverse-proxy-cloudflare)
+[![Docker Image Size](https://img.shields.io/docker/image-size/homeall/caddy-reverse-proxy-cloudflare/latest)](https://hub.docker.com/r/homeall/caddy-reverse-proxy-cloudflare)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](#) 
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white)](#) 
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhomeall%2Fcaddy-reverse-proxy-cloudflare.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhomeall%2Fcaddy-reverse-proxy-cloudflare?ref=badge_shield&issueType=license)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://ionut.vip)
 
 
 # Caddy reverse proxy with cloudflare plugin
