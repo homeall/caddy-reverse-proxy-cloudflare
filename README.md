@@ -9,6 +9,9 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
+      <a href="#whats-new">What's New</a>
+    </li>
+    <li>
       <a href="#about-the-project">About The Project</a>
     </li>
     <li>
@@ -19,28 +22,48 @@
     </li>
     <li>
       <a href="#usage">Usage</a>
-      <ul>
-        <li><a href="#docker-compose">Docker-compose</a></li>
-      </ul>
+        <ul>
+          <li><a href="#docker-compose">Docker-compose</a></li>
+          <li><a href="#docker-run">Docker run</a></li>
+        </ul>
         <ul>
         <li><a href="#testing">Testing</a></li>
       </ul>
     </li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#support-this-project">Support</a></li>
+      <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
+
+## What's New
+
+- Base image updated to **Alpine Linux 3.22**.
+- Expanded plugin set including rate limiting, Cloudflare IP handling, geolocation, Coraza WAF and more.
+- Updated CI workflows and security docs.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This docker image enhances the work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) by including additional Caddy plugins:
-*   **[Cloudflare DNS](https://github.com/caddy-dns/cloudflare)**: For DNS challenges, especially for wildcard domains.
-*   **[caddy-admin-ui](https://github.com/LXFN/caddy-admin-ui)**: Provides a web interface for Caddy administration (experimental).
-*   **[caddy-storage-redis](https://github.com/gamalan/caddy-storage-redis)**: Enables Redis for Caddy's storage, useful for distributed setups.
+This docker image enhances the work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) by bundling several useful plugins:
+* **[caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy)** – auto-configure Caddy from container labels.
+* **[caddy-dynamicdns](https://github.com/mholt/caddy-dynamicdns)** – updates DNS records when your IP changes.
+* **[sablier](https://github.com/sablierapp/sablier)** – start workloads on demand and stop them when idle.
+* **[CrowdSec bouncer](https://github.com/hslatman/caddy-crowdsec-bouncer)** – block malicious traffic via CrowdSec (HTTP/AppSec/Layer4).
+* **[caddy-admin-ui](https://github.com/gsmlg-dev/caddy-admin-ui)** – experimental web UI for administration.
+* **[caddy-storage-redis](https://github.com/pberkel/caddy-storage-redis)** – store certificates in Redis for clustered setups.
+* **[Cloudflare DNS](https://github.com/caddy-dns/cloudflare)** – handle ACME DNS challenges through Cloudflare.
+* **[transform-encoder](https://github.com/caddyserver/transform-encoder)** – additional compression encoders.
+* **[caddy-ratelimit](https://github.com/mholt/caddy-ratelimit)** – simple request rate limiting.
+* **[caddy-l4](https://github.com/mholt/caddy-l4)** – layer‑4 (TCP/UDP) features.
+* **[caddy-cloudflare-ip](https://github.com/WeidiDeng/caddy-cloudflare-ip)** – log real client IPs when behind Cloudflare.
+* **[caddy-maxmind-geolocation](https://github.com/porech/caddy-maxmind-geolocation)** – MaxMind GeoIP lookups.
+* **[Coraza WAF](https://github.com/corazawaf/coraza-caddy)** – integrate the Coraza web application firewall.
+* **[caddy-security](https://github.com/greenpau/caddy-security)** – authentication portals and security helpers.
+* **[caddy-websockify](https://github.com/hadi77ir/caddy-websockify)** – proxy and translate WebSockets.
 
-The image is built on **Caddy v2.10.0** and **Alpine Linux v3.21**. It uses a **distroless base image** for a smaller footprint and improved security. This means the image contains only the Caddy binary and its dependencies, without a shell or other common utilities. For most users, this has no direct impact, but it's something to be aware of if you try to `docker exec` into the container for debugging.
+The image is built on **Caddy v2.10.0** and **Alpine Linux v3.22**. It uses a **distroless base image** for a smaller footprint and improved security. This means the image contains only the Caddy binary and its dependencies, without a shell or other common utilities. For most users, this has no direct impact, but it's something to be aware of if you try to `docker exec` into the container for debugging.
 
 :notebook_with_decorative_cover: For detailed guidance on using the base caddy-docker-proxy functionality, refer to the [original documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
 
@@ -97,7 +120,7 @@ services:
       TZ: 'Europe/London'
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"      # needs socket to read events
-      - "./caddy-data:/data"                             # needs volume to back up certificates
+      - "./caddy-data:/data"                             # persist certificates via XDG_DATA_HOME
     ports:
       - "80:80"
       - "443:443"
@@ -126,6 +149,23 @@ services:
 
 ---
 
+### Docker Run
+
+For quick tests without a compose file:
+
+```bash
+docker run -d --name caddy \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd)/caddy-data:/data \
+  -e TZ="Europe/London" \
+  -p 80:80 -p 443:443 -p 443:443/udp \
+  homeall/caddy-reverse-proxy-cloudflare:latest
+```
+
+Label your other containers as in the compose example so Caddy can route traffic.
+
+---
+
 ### Using a Custom Caddyfile
 
 By default, this image uses `caddy-docker-proxy` to generate Caddy's configuration from Docker labels. However, you can also provide your own complete Caddyfile.
@@ -147,7 +187,7 @@ services:
     image: homeall/caddy-reverse-proxy-cloudflare:latest
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"  # Still needed if you import label-generated snippets or for other proxy features
-      - "./caddy-data:/data"                         # For Caddy's state (certificates, etc.)
+      - "./caddy-data:/data"                         # persist certificates via XDG_DATA_HOME
       - "./my-custom-caddyfile:/etc/caddy/Caddyfile" # Mount your custom Caddyfile here
     # environment:
       # CADDY_DOCKER_CADDYFILE_PATH: '/etc/caddy/Caddyfile' # Default path for label-generated config.
@@ -262,7 +302,7 @@ services:
                                                             # When mounting to /etc/caddy/Caddyfile, this is implicitly handled.
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"  # For caddy-docker-proxy to read service labels
-      - "./caddy-data:/data"                         # For Caddy's state (certificates, etc.)
+      - "./caddy-data:/data"                         # persist certificates via XDG_DATA_HOME
       - "./my-caddyfile-with-redis-config:/etc/caddy/Caddyfile" # Mount your Caddyfile here
     ports:
       - "80:80"
@@ -315,6 +355,10 @@ Make sure to replace `your.example.com` with the domain you configured in the `w
 :red_circle: Please free to open a ticket on Github.
 
 Or [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-yellow?logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/homeall) 😊
+## Support this project
+If you find this image useful, consider supporting development on [Buy Me a Coffee](https://buymeacoffee.com/homeall)!
+Thanks for your support!
+
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
