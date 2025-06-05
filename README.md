@@ -41,7 +41,7 @@ Enjoying the caffeine boost? If this repo saves you some time, [buy me a coffee]
 
 ## What's New
 
-- Base image updated to **Alpine Linux 3.22**.
+- Now built on a minimal **distroless** base image.
 - Expanded plugin set including rate limiting, Cloudflare IP handling, geolocation, Coraza WAF and more.
 - Updated CI workflows and security docs.
 
@@ -65,7 +65,7 @@ This docker image enhances the work from [@lucaslorentz](https://github.com/luca
 * **[caddy-security](https://github.com/greenpau/caddy-security)** – authentication portals and security helpers.
 * **[caddy-websockify](https://github.com/hadi77ir/caddy-websockify)** – proxy and translate WebSockets.
 
-The image is built on **Caddy v2.10.0** and **Alpine Linux v3.22**. It uses a **distroless base image** for a smaller footprint and improved security. This means the image contains only the Caddy binary and its dependencies, without a shell or other common utilities. For most users, this has no direct impact, but it's something to be aware of if you try to `docker exec` into the container for debugging.
+The image uses a **distroless** base for a smaller footprint and improved security. Caddy and its plugins are refreshed automatically by GitHub Actions, so you always get the latest stable versions.
 
 :notebook_with_decorative_cover: For detailed guidance on using the base caddy-docker-proxy functionality, refer to the [original documentation](https://github.com/lucaslorentz/caddy-docker-proxy).
 
@@ -348,7 +348,7 @@ Make sure to replace `your.example.com` with the domain you configured in the `w
 <!-- CONTACT -->
 ## Contact
 
-:red_circle: Please feel free to open a ticket on GitHub if you run into issues.
+:red_circle: [Open an issue on GitHub](https://github.com/homeall/caddy-reverse-proxy-cloudflare/issues/new/choose) if you run into problems.
 ## Support this project
 If you find this image useful, you can [buy me a coffee](https://buymeacoffee.com/homeall) to help keep development going.
 
