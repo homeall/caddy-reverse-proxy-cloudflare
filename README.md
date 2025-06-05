@@ -3,6 +3,9 @@
 
 
 # Caddy reverse proxy with cloudflare plugin
+
+Enjoying the caffeine boost? If this repo saves you some time, [buy me a coffee](https://buymeacoffee.com/homeall)!
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-yellow?logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/homeall)
 ![Caddy Ultimate Reverse Proxy Banner](./assets/banner.png)
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -33,7 +36,6 @@
     <li><a href="#license">License</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="#support-this-project">Support</a></li>
-      <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -353,13 +355,3 @@ If you find this image useful, you can [buy me a coffee](https://buymeacoffee.co
 [![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=homeall&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff)](https://buymeacoffee.com/homeall)
 
 
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-
- * :tada: [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) for the original caddy-docker-proxy :trophy:
- * :tada: The :tm: [@Caddy](https://github.com/caddyserver/caddy) team and community :1st_place_medal:
- * :tada: [caddy-dns/cloudflare](https://github.com/caddy-dns/cloudflare) for the Cloudflare DNS plugin :medal_sports:
- * :tada: [@LXFN](https://github.com/LXFN) for the [caddy-admin-ui](https://github.com/LXFN/caddy-admin-ui) plugin :medal_sports:
- * :tada: [@gamalan](https://github.com/gamalan) for the [caddy-storage-redis](https://github.com/gamalan/caddy-storage-redis) plugin :medal_sports:
-
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
