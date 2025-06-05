@@ -192,6 +192,23 @@ services:
 ```
 When you mount your own file to `/etc/caddy/Caddyfile`, it takes precedence over the file `caddy-docker-proxy` would generate at that same default location. The image's entrypoint is designed to detect a user-provided Caddyfile at this path and will use it directly.
 
+### Basic Caddyfile Example
+
+Below is a minimal Caddyfile that configures a single domain using the Cloudflare DNS plugin. The Cloudflare API token is read from the `CLOUDFLARE_API_TOKEN` environment variable.
+
+```caddyfile
+{
+    email you@example.com
+    acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+}
+
+example.com {
+    respond "Hello from Caddy"
+}
+```
+
+Before running Caddy, ensure the `CLOUDFLARE_API_TOKEN` environment variable is set with a token that has permission to manage your domain's DNS records.
+
 **Advanced: Label-Generated Config to a Different Path (`CADDY_DOCKER_CADDYFILE_PATH`)**
 The `CADDY_DOCKER_CADDYFILE_PATH` environment variable tells `caddy-docker-proxy` where it should write the Caddyfile it generates from Docker labels.
 *   If you **do not set** `CADDY_DOCKER_CADDYFILE_PATH`, it defaults to `/etc/caddy/Caddyfile`.
