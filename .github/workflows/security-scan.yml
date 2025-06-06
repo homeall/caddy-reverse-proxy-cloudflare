@@ -16,7 +16,7 @@ env:
 
 jobs:
   scan-ghcr-image:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Log in to GitHub Container Registry
