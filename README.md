@@ -1,4 +1,5 @@
 [![Cloudflared](https://github.com/homeall/caddy-reverse-proxy-cloudflare/workflows/CI/badge.svg)](https://github.com/homeall/caddy-reverse-proxy-cloudflare/actions)
+![Trivy Workflow Status](https://github.com/homeall/caddy-reverse-proxy-cloudflare/actions/workflows/security-scan.yml/badge.svg?branch=main)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#) 
 [![Docker pulls](https://img.shields.io/docker/pulls/homeall/caddy-reverse-proxy-cloudflare)](https://img.shields.io/docker/pulls/homeall/caddy-reverse-proxy-cloudflare)
 [![Docker Image Size](https://img.shields.io/docker/image-size/homeall/caddy-reverse-proxy-cloudflare/latest)](https://hub.docker.com/r/homeall/caddy-reverse-proxy-cloudflare)
