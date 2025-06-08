@@ -1,28 +1,30 @@
+# --------------------------------------------------------------------
 # docker-bake.hcl
-# Centralized Docker Build configuration
+# Centralized Docker Build configuration for multi-platform and CI/CD
+# --------------------------------------------------------------------
 
-# Setting default group
+# Default build group
 group "default" {
   targets = ["build"]
 }
 
-# Importing metadata from other steps
+# Target for Docker metadata action (populated by workflow)
 target "docker-metadata-action" {}
 
-# Setting building target
+# Main build target
 target "build" {
   inherits   = ["docker-metadata-action"]
   context    = "."
   dockerfile = "Dockerfile"
 
-  # Multi-platform build
+  # Multi-platform support
   platforms = [
     "linux/amd64",
     "linux/arm64",
     "linux/arm",
   ]
 
-  # GitHub Actions cache
+  # Caching for GitHub Actions
   cache-from = [
     "type=gha"
   ]
@@ -30,20 +32,21 @@ target "build" {
     "type=gha,mode=max"
   ]
 
-  # Image labels
+  # ---------- Image Labels ----------
   labels = {
     "maintainer"           = "Homeall"
     "homeall.buymeacoffee" = "☕ Like this project? Buy me a coffee: https://www.buymeacoffee.com/homeall 😎"
     "homeall.easteregg"    = "🎉 You found the hidden label! Have a nice day. 😎"
   }
-  # Image annotation
-  annotations = [
+
+  # ---------- Image Annotations (OCI manifest-level) ----------
+  annotations = {
     "maintainer"           = "Homeall"
     "homeall.buymeacoffee" = "☕ Like this project? Buy me a coffee: https://www.buymeacoffee.com/homeall 😎"
     "homeall.easteregg"    = "🎉 You found the hidden label! Have a nice day. 😎"
-  ]
+  }
 
-  # Build attestations: SBOM and provenance (max detail)
+  # ---------- Build Attestations ----------
   attest = [
     {
       type = "provenance"
