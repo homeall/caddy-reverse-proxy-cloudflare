@@ -71,11 +71,9 @@ jobs:
           files: |
             ./docker-bake.hcl
             cwd://${{ steps.meta.outputs.bake-file-tags }}
+            cwd://${{ steps.meta.outputs.bake-file-labels }}
             cwd://${{ steps.meta.outputs.bake-file-annotations }}
-          targets: build
           push: true
-          sbom: true
-          provenance: mode=max
           
       - name: Extract Digest for Attestation
         id: extract_digest
