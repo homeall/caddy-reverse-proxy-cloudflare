@@ -221,15 +221,6 @@ Before running Caddy, ensure the `CLOUDFLARE_API_TOKEN` environment variable is 
 The `CADDY_DOCKER_CADDYFILE_PATH` environment variable tells `caddy-docker-proxy` where it should write the Caddyfile it generates from Docker labels.
 *   If you **do not set** `CADDY_DOCKER_CADDYFILE_PATH`, it defaults to `/etc/caddy/Caddyfile`.
 *   If you mount your custom Caddyfile to `/etc/caddy/Caddyfile`, `caddy-docker-proxy` will still attempt to write to this path, but your mounted file will be what Caddy uses.
-*   **Hybrid Setup (Advanced):** If you want Caddy to load your custom Caddyfile from `/etc/caddy/Caddyfile` but *also* want `caddy-docker-proxy` to generate a separate Caddyfile from labels (e.g., for specific dynamic backends), you can set `CADDY_DOCKER_CADDYFILE_PATH` to a *different* location, for example:
-    ```yaml
-    environment:
-      CADDY_DOCKER_CADDYFILE_PATH: '/caddy-generated/CaddyfileFromLabels'
-    volumes:
-      - "./my-custom-caddyfile:/etc/caddy/Caddyfile"
-      - "./caddy-generated:/caddy-generated" # So you can inspect or use the generated file
-    ```
-    In this scenario, your custom `/etc/caddy/Caddyfile` would be loaded by Caddy. You could then use the `import /caddy-generated/CaddyfileFromLabels` directive within your custom Caddyfile to include the label-generated configurations. This is useful if you want a base static configuration combined with dynamic configurations from other Docker containers.
 
 **Important Considerations:**
 *   If you provide a custom Caddyfile to `/etc/caddy/Caddyfile`, you are fully responsible for its content, including global options, TLS settings, and defining your sites.
