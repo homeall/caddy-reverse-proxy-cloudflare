@@ -15,12 +15,12 @@ jobs:
       - uses: hmarr/auto-approve-action@v4
         name: Auto-approve PR
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.WORKFLOW_TOKEN }}
 
       - name: Enable auto-merge
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.WORKFLOW_TOKEN }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: merge
       
