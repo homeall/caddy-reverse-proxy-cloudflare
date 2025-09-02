@@ -83,7 +83,7 @@ jobs:
 
       - name: Generate artifact attestation
         id: artifacts
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v3
         with:
           subject-name: index.docker.io/${{ github.repository }}
           subject-digest: ${{ steps.extract_digest.outputs.digest }}
@@ -91,7 +91,7 @@ jobs:
 
       - name: Generate artifact attestation for GHCR
         id: artifacts-ghcr
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v3
         with:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.extract_digest.outputs.digest }}
