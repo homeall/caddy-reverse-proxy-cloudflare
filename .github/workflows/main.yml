@@ -218,7 +218,7 @@ jobs:
           
       - name: Create Github release
         id: github-releasing
-        uses: ncipollo/release-action@v1.18.0
+        uses: ncipollo/release-action@v1.19.1
         with:
           tag: ${{ env.TAG }}
           allowUpdates: true
