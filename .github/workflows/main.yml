@@ -105,7 +105,7 @@ jobs:
           output-file: 'sbom.spdx.json'
 
       - name: Attest SBOM GHCR
-        uses: actions/attest-sbom@v2
+        uses: actions/attest-sbom@v3
         with:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.extract_digest.outputs.digest }}
