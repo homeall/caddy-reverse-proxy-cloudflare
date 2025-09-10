@@ -61,19 +61,19 @@ Enjoying the caffeine boost? If this repo saves you some time, [buy me a coffee]
 This docker image enhances the work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) by bundling several useful plugins:
 * **[caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy)** – auto-configure Caddy from container labels.
 * **[caddy-dynamicdns](https://github.com/mholt/caddy-dynamicdns)** – updates DNS records when your IP changes.
-* **[sablier](https://github.com/sablierapp/sablier)** – start workloads on demand and stop them when idle.
-* **[CrowdSec bouncer](https://github.com/hslatman/caddy-crowdsec-bouncer)** – block malicious traffic via CrowdSec (HTTP/AppSec/Layer4).
-* **[caddy-admin-ui](https://github.com/gsmlg-dev/caddy-admin-ui)** – experimental web UI for administration.
-* **[caddy-storage-redis](https://github.com/pberkel/caddy-storage-redis)** – store certificates in Redis for clustered setups.
-* **[Cloudflare DNS](https://github.com/caddy-dns/cloudflare)** – handle ACME DNS challenges through Cloudflare.
-* **[transform-encoder](https://github.com/caddyserver/transform-encoder)** – additional compression encoders.
-* **[caddy-ratelimit](https://github.com/mholt/caddy-ratelimit)** – simple request rate limiting.
-* **[caddy-l4](https://github.com/mholt/caddy-l4)** – layer‑4 (TCP/UDP) features.
-* **[caddy-cloudflare-ip](https://github.com/WeidiDeng/caddy-cloudflare-ip)** – log real client IPs when behind Cloudflare.
-* **[caddy-maxmind-geolocation](https://github.com/porech/caddy-maxmind-geolocation)** – MaxMind GeoIP lookups.
-* **[Coraza WAF](https://github.com/corazawaf/coraza-caddy)** – integrate the Coraza web application firewall.
-* **[caddy-security](https://github.com/greenpau/caddy-security)** – authentication portals and security helpers.
-* **[caddy-websockify](https://github.com/hadi77ir/caddy-websockify)** – proxy and translate WebSockets.
+~~* **[sablier](https://github.com/sablierapp/sablier)** – start workloads on demand and stop them when idle.~~
+~~* **[CrowdSec bouncer](https://github.com/hslatman/caddy-crowdsec-bouncer)** – block malicious traffic via CrowdSec (HTTP/AppSec/Layer4).~~
+~~* **[caddy-admin-ui](https://github.com/gsmlg-dev/caddy-admin-ui)** – experimental web UI for administration.~~
+~~* **[caddy-storage-redis](https://github.com/pberkel/caddy-storage-redis)** – store certificates in Redis for clustered setups.~~
+~~* **[Cloudflare DNS](https://github.com/caddy-dns/cloudflare)** – handle ACME DNS challenges through Cloudflare.~~
+~~* **[transform-encoder](https://github.com/caddyserver/transform-encoder)** – additional compression encoders.~~
+~~* **[caddy-ratelimit](https://github.com/mholt/caddy-ratelimit)** – simple request rate limiting.~~
+~~* **[caddy-l4](https://github.com/mholt/caddy-l4)** – layer‑4 (TCP/UDP) features.~~
+~~* **[caddy-cloudflare-ip](https://github.com/WeidiDeng/caddy-cloudflare-ip)** – log real client IPs when behind Cloudflare.~~
+~~* **[caddy-maxmind-geolocation](https://github.com/porech/caddy-maxmind-geolocation)** – MaxMind GeoIP lookups.~~
+~~* **[Coraza WAF](https://github.com/corazawaf/coraza-caddy)** – integrate the Coraza web application firewall.~~
+~~* **[caddy-security](https://github.com/greenpau/caddy-security)** – authentication portals and security helpers.~~
+~~* **[caddy-websockify](https://github.com/hadi77ir/caddy-websockify)** – proxy and translate WebSockets.~~
 
 The image uses a **distroless** base for a smaller footprint and improved security. Caddy and its plugins are refreshed automatically by GitHub Actions, so you always get the latest stable versions.
 
