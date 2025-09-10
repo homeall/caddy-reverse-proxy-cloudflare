@@ -1,10 +1,10 @@
 services:
   caddy:
     container_name: caddy
-    image: homeall/caddy-reverse-proxy-cloudflare:latest
+    image: tfenby/caddy-custom:latest
     restart: unless-stopped
     environment:
-      TZ: "Europe/London"
+      TZ: "America/Detroit"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"      # needs socket to read events
       - "./caddy-data:/data"                             # persist certificates via XDG_DATA_HOME
