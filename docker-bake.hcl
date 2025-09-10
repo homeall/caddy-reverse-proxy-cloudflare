@@ -34,16 +34,12 @@ target "build" {
 
   # ---------- Image Labels ----------
   labels = {
-    "maintainer"           = "Homeall"
-    "homeall.buymeacoffee" = "☕ Like this project? Buy me a coffee: https://www.buymeacoffee.com/homeall 😎"
-    "homeall.easteregg"    = "🎉 You found the hidden label! Have a nice day. 😎"
+    "maintainer"           = "TFenby"
   }
 
   # ---------- Image Annotations (OCI manifest-level) ----------
   annotations = [
-    "maintainer=Image lovingly brewed by Homeall ☕",
-    "homeall.buymeacoffee=Want to caffeinate my coding? Visit: https://www.buymeacoffee.com/homeall 🚀",
-    "homeall.easteregg=Did you know? Inspecting images for hidden messages is a sign of true curiosity! 👀"
+    "maintainer=Made by Homeall, forked by TFenby",
   ]
 
   # ---------- Build Attestations ----------
