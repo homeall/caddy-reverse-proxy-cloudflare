@@ -50,14 +50,16 @@ Enjoying the caffeine boost? If this repo saves you some time, [buy me a coffee]
 ## What's New
 
 - Now built on a minimal **distroless** base image.
-- Expanded plugin set including rate limiting, Cloudflare IP handling, geolocation, Coraza WAF and more.
+- Expanded plugin set including rate limiting, Cloudflare IP handling, geolocation, Coraza WAF, HTTP caching, and Brotli compression.
 - Updated CI workflows and security docs.
+- **Disabled caddy-docker-proxy/v2 plugin** - The Docker proxy functionality is currently disabled in this build.
+- Added cache-handler and caddy-cbrotli plugins for enhanced performance.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
 This docker image enhances the work from [@lucaslorentz](https://github.com/lucaslorentz/caddy-docker-proxy) by bundling several useful plugins:
-* **[caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy)** – auto-configure Caddy from container labels.
+* **[caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy)** – auto-configure Caddy from container labels (currently disabled in this build).
 * **[caddy-dynamicdns](https://github.com/mholt/caddy-dynamicdns)** – updates DNS records when your IP changes.
 * **[sablier](https://github.com/sablierapp/sablier)** – start workloads on demand and stop them when idle.
 * **[CrowdSec bouncer](https://github.com/hslatman/caddy-crowdsec-bouncer)** – block malicious traffic via CrowdSec (HTTP/AppSec/Layer4).
@@ -72,6 +74,8 @@ This docker image enhances the work from [@lucaslorentz](https://github.com/luca
 * **[Coraza WAF](https://github.com/corazawaf/coraza-caddy)** – integrate the Coraza web application firewall.
 * **[caddy-security](https://github.com/greenpau/caddy-security)** – authentication portals and security helpers.
 * **[caddy-websockify](https://github.com/hadi77ir/caddy-websockify)** – proxy and translate WebSockets.
+* **[cache-handler](https://github.com/caddyserver/cache-handler)** – HTTP caching middleware.
+* **[caddy-cbrotli](https://github.com/dunglas/caddy-cbrotli)** – Brotli compression support with CGO.
 
 The image uses a **distroless** base for a smaller footprint and improved security. Caddy and its plugins are refreshed automatically by GitHub Actions, so you always get the latest stable versions.
 
@@ -107,11 +111,11 @@ You will need to have:
 
 ### Docker Compose
 
-:warning: You will have to use **labels** in docker-compose deployment. Please review below what it means each [label](https://caddyserver.com/docs/caddyfile/directives/tls). :arrow_down:
+:warning: Since caddy-docker-proxy is disabled, you must provide your own Caddyfile configuration. Labels are not processed. :arrow_down:
 
-You will tell :tm: [Caddy](https://caddyserver.com/) where it has to route traffic in docker network, as :tm: [Caddy](https://caddyserver.com/) is **ingress** on this case. 
+You will need to configure :tm: [Caddy](https://caddyserver.com/) directly through a Caddyfile, as the automatic Docker label processing is disabled.
 
-:arrow_down: A simple [docker-compose.yml](https://docs.docker.com/compose/):
+:arrow_down: A simple [docker-compose.yml](https://docs.docker.com/compose/) with a custom Caddyfile:
 
 ```
 
@@ -129,27 +133,27 @@ services:
       - "80:80"
       - "443:443"
       - "443:443/udp"                                    # Enable HTTP/3
-    labels:                                              # Global options
-      caddy.email: email@example.com                     # needs for acme CERT registration account
-      caddy.acme_dns: "cloudflare $API_TOKEN"            # When set here, you don't need to set it for each service individually
-      # Optional: Enable Admin UI (experimental) - see section below for more details
-      # caddy.admin: "0.0.0.0:2019" 
-      # caddy.admin.origins: "your.admin.domain.com" # Or use specific IP/host if not exposing publicly
+      - "./Caddyfile:/etc/caddy/Caddyfile"               # Mount your custom Caddyfile
 
   whoami0:
     container_name: whoam
     image: traefik/whoami # Using traefik/whoami as jwilder/whoami is a bit old
     hostname: TheDocker #----->>Expected result using curl
     restart: unless-stopped
-    labels:
-      caddy: your.example.com                            # Caddy will route traffic for this domain
-      # caddy.tls.ca: "https://acme.zerossl.com/v2/DV90" # Uncomment if you prefer ZeroSSL. Default is Let's Encrypt.
-      caddy.reverse_proxy: "{{upstreams 80}}"            # Forward traffic to port 80 of this container (traefik/whoami listens on 80)
-      caddy.tls.protocols: "tls1.3"                      # Optional: Enforce TLS 1.3. Default is tls1.2 and tls1.3.
-      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # For testing. Remove for production.
-      caddy.tls.dns: "cloudflare $API_TOKEN"             # (Optional when using global setting) Replace $API_TOKEN with your Cloudflare scoped API token.
 ```
 > Please get your scoped API-Token from  **[here](https://github.com/libdns/cloudflare#authenticating)**.
+
+> You'll need to create a `Caddyfile` in the same directory as your docker-compose.yml with content like:
+> ```caddyfile
+> {
+>     email email@example.com
+>     acme_dns cloudflare $API_TOKEN
+> }
+>
+> your.example.com {
+>     reverse_proxy whoami0:80
+> }
+> ```
 
 ---
 
@@ -166,22 +170,24 @@ docker run -d --name caddy \
   homeall/caddy-reverse-proxy-cloudflare:latest
 ```
 
-Label your other containers as in the compose example so Caddy can route traffic.
+Note: Since caddy-docker-proxy is disabled, container labels are not processed. You must configure all routes in your Caddyfile.
 
 ---
 
 ### Using a Custom Caddyfile
 
-By default, this image uses `caddy-docker-proxy` to generate Caddy's configuration from Docker labels. However, you can also provide your own complete Caddyfile.
+**Note:** The `caddy-docker-proxy/v2` plugin is currently disabled in this build. You will need to provide your own Caddyfile for configuration.
+
+By default, this image would use `caddy-docker-proxy` to generate Caddy's configuration from Docker labels, but since it's disabled, you must provide your own complete Caddyfile.
 
 **How Caddy Loads Configuration:**
 Caddy itself loads its primary configuration from `/etc/caddy/Caddyfile` by default.
 
-**Role of `caddy-docker-proxy` and Labels:**
-The `caddy-docker-proxy` service (which is part of this image's entrypoint logic) monitors Docker events and generates a Caddyfile based on the labels you define on your services. By default, `caddy-docker-proxy` writes this generated Caddyfile to `/etc/caddy/Caddyfile`.
+**Important Notice:**
+Since `caddy-docker-proxy/v2` is disabled in this build, the automatic generation of Caddy configuration from Docker labels is not available. You must provide your own Caddyfile configuration.
 
-**Providing Your Own Caddyfile (Most Common Method):**
-If you want to use your own complete Caddyfile and bypass the label-based generation for the main configuration, mount your custom Caddyfile to `/etc/caddy/Caddyfile`.
+**Providing Your Own Caddyfile (Required Method):**
+Since the label-based generation is disabled, you must mount your custom Caddyfile to `/etc/caddy/Caddyfile` for Caddy to use.
 
 Example `docker-compose.yml` snippet:
 ```yaml
@@ -198,7 +204,7 @@ services:
                                                             # If you mount to /etc/caddy/Caddyfile, this var is implicitly handled.
     # ...
 ```
-When you mount your own file to `/etc/caddy/Caddyfile`, it takes precedence over the file `caddy-docker-proxy` would generate at that same default location. The image's entrypoint is designed to detect a user-provided Caddyfile at this path and will use it directly.
+When you mount your own file to `/etc/caddy/Caddyfile`, Caddy will use it directly for its configuration. Since `caddy-docker-proxy` is disabled, this is the only way to configure Caddy in this build.
 
 ### Basic Caddyfile Example
 
@@ -217,30 +223,26 @@ example.com {
 
 Before running Caddy, ensure the `CLOUDFLARE_API_TOKEN` environment variable is set with a token that has permission to manage your domain's DNS records.
 
-**Advanced: Label-Generated Config to a Different Path (`CADDY_DOCKER_CADDYFILE_PATH`)**
-The `CADDY_DOCKER_CADDYFILE_PATH` environment variable tells `caddy-docker-proxy` where it should write the Caddyfile it generates from Docker labels.
-*   If you **do not set** `CADDY_DOCKER_CADDYFILE_PATH`, it defaults to `/etc/caddy/Caddyfile`.
-*   If you mount your custom Caddyfile to `/etc/caddy/Caddyfile`, `caddy-docker-proxy` will still attempt to write to this path, but your mounted file will be what Caddy uses.
-
 **Important Considerations:**
-*   If you provide a custom Caddyfile to `/etc/caddy/Caddyfile`, you are fully responsible for its content, including global options, TLS settings, and defining your sites.
-*   Plugins like `caddy-storage-redis` require their configuration to be in the global options block of the Caddyfile that Caddy loads (i.e., your custom `/etc/caddy/Caddyfile`).
-*   The `caddy.email` and `caddy.acme_dns` labels on the Caddy service itself are typically used by `caddy-docker-proxy` to generate global options. If you provide a full custom Caddyfile, ensure these global options (like `email` for ACME and `acme_dns` for DNS challenges) are correctly defined in your Caddyfile's global block `{...}`.
+*   Since `caddy-docker-proxy` is disabled, you must provide a complete Caddyfile with all necessary configurations.
+*   You are fully responsible for the content of your Caddyfile, including global options, TLS settings, and defining your sites.
+*   Plugins like `caddy-storage-redis` require their configuration to be in the global options block of your Caddyfile.
+*   All configurations that would normally be set via Docker labels must now be defined directly in your Caddyfile's global block `{...}`.
 
 ---
 
 ### :construction: Caddy Admin UI (Experimental)
 
-The `caddy-admin-ui` plugin provides a web interface for managing Caddy. 
-To enable it, you can add the following global labels to your Caddy service in `docker-compose.yml`:
+The `caddy-admin-ui` plugin provides a web interface for managing Caddy.
+To enable it, add the following configuration to your Caddyfile's global block:
 
-```yaml
-    labels:
-      # ... other global labels ...
-      caddy.admin: "0.0.0.0:2019"                             # Listen address for the admin API & UI
-      caddy.admin.origins: "your.admin.domain.com"            # Allowed Host header for accessing the UI (replace with your domain or IP)
-      # caddy.admin.enforce_origin: "true"                    # Optional: Enforce origin check
-      # caddy.admin.instance_id: "my-caddy-instance"          # Optional: Custom instance ID
+```caddyfile
+{
+    admin 0.0.0.0:2019
+    admin_origins your.admin.domain.com
+    # admin_enforce_origin true
+    # admin_instance_id "my-caddy-instance"
+}
 ```
 
 :warning: **Security Note**: Exposing the Caddy admin interface publicly can be a security risk. Ensure you understand the implications and secure it appropriately (e.g., using strong authentication, IP whitelisting, or running it on a private network). The plugin is also experimental.
@@ -313,19 +315,14 @@ services:
       # CADDY_DOCKER_CADDYFILE_PATH: '/etc/caddy/Caddyfile' # Default path for label-generated config.
                                                             # When mounting to /etc/caddy/Caddyfile, this is implicitly handled.
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"  # For caddy-docker-proxy to read service labels
       - "./caddy-data:/data"                         # persist certificates via XDG_DATA_HOME
       - "./my-caddyfile-with-redis-config:/etc/caddy/Caddyfile" # Mount your Caddyfile here
     ports:
       - "80:80"
       - "443:443"
       - "443:443/udp"
-    # Docker labels for caddy-docker-proxy (e.g., for other services) can still be used
-    # in conjunction with a custom Caddyfile if your custom Caddyfile imports label-generated snippets.
-    # However, global options like 'storage' must be in the primary /etc/caddy/Caddyfile.
-    # labels:
-    #   caddy.email: email@example.com 
-    #   caddy.acme_dns: "cloudflare $API_TOKEN"
+    # Note: Docker labels are not processed since caddy-docker-proxy is disabled
+    # All configuration must be done in your custom Caddyfile
 ```
 The `caddy-storage-redis` configuration (like the `storage redis { ... }` block) must be in the global options of the Caddyfile that Caddy loads (i.e., `/etc/caddy/Caddyfile` if you've mounted your own).
 
@@ -353,7 +350,7 @@ $  curl --insecure -vvI https://your.example.com 2>&1 | awk 'BEGIN { cert=0 } /^
 $  curl -k https://your.example.com
 I'm TheDocker
 ```
-Make sure to replace `your.example.com` with the domain you configured in the `whoami` service labels. The output `I'm TheDocker` comes from the `hostname` set in the `whoami` service. If you used `traefik/whoami` on port 80, it will output its own identifying information.
+Make sure to replace `your.example.com` with the domain you configured in your Caddyfile. The output `I'm TheDocker` comes from the `hostname` set in the `whoami` service. If you used `traefik/whoami` on port 80, it will output its own identifying information.
 
 ![](./assets/caddy-reverse-proxy.gif)
 

@@ -4,8 +4,12 @@ ARG ALPINE_VERSION=3.22.2
 # ---- Builder Stage ----
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
-RUN xcaddy build \
-    --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
+# Install caddy-cbrotli dependencies
+RUN apk update && \
+    apk add brotli-dev gcc musl-dev
+
+RUN CGO_ENABLED=1 xcaddy build \
+    # --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
     --with github.com/mholt/caddy-dynamicdns \
     --with github.com/sablierapp/sablier/plugins/caddy \
     --with github.com/hslatman/caddy-crowdsec-bouncer/http \
@@ -22,11 +26,13 @@ RUN xcaddy build \
     --with github.com/corazawaf/coraza-caddy/v2 \
     --with github.com/greenpau/caddy-security \
 #    --with github.com/fabriziosalmi/caddy-waf \
-    --with github.com/hadi77ir/caddy-websockify
+    --with github.com/hadi77ir/caddy-websockify \
+    --with github.com/caddyserver/cache-handler \
+    --with github.com/dunglas/caddy-cbrotli
 
 # Certs stage
 FROM alpine:${ALPINE_VERSION} AS certs
-RUN apk add --no-cache ca-certificates tzdata
+RUN apk add --no-cache ca-certificates tzdata brotli-libs
 
 # Final image
 FROM gcr.io/distroless/static-debian12:latest
@@ -40,4 +46,4 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=certs /usr/share/zoneinfo /usr/share/zoneinfo
 
-CMD ["caddy", "docker-proxy"]
+CMD ["caddy", "run"]
