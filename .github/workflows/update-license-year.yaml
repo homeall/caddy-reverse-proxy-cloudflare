@@ -40,7 +40,7 @@ jobs:
       - name: Commit and Create Pull Request
         if: steps.update_license.outputs.changed == '1'
         id: cpr
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: "update/license-year-${{ steps.update_license.outputs.year }}"
           title: "${{ steps.update_license.outputs.msg }}"
