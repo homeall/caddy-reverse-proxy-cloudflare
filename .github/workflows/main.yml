@@ -21,8 +21,6 @@ jobs:
         id: install-cosign
         if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@v4.1.2
-        with:
-          cosign-release: 'v2.4.3'
 
       - name: Set Build Tag
         id: set-env
