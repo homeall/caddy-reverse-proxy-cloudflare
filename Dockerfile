@@ -29,7 +29,7 @@ FROM alpine:${ALPINE_VERSION} AS certs
 RUN apk add --no-cache ca-certificates tzdata
 
 # Final image
-FROM gcr.io/distroless/static-debian12:latest
+FROM gcr.io/distroless/static-debian13:latest
 
 ENV XDG_CONFIG_HOME=/config \
     XDG_DATA_HOME=/data
