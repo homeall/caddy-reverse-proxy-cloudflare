@@ -64,7 +64,7 @@ jobs:
 
       - name: Docker Bake Build and Push
         id: bake
-        uses: docker/bake-action@v7.3.0
+        uses: docker/bake-action@v7.4.0
         with:
           files: |
             ./docker-bake.hcl
