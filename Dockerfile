@@ -1,5 +1,5 @@
 ARG CADDY_VERSION=2.11.4
-ARG ALPINE_VERSION=3.24.1
+ARG ALPINE_VERSION=3.24.2
 
 # ---- Builder Stage ----
 FROM caddy:${CADDY_VERSION}-builder AS builder
